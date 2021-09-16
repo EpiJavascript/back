@@ -11,7 +11,7 @@ import * as fs from 'fs';
   imports: [
     // dotenv Config
     ConfigModule.forRoot({
-      envFilePath: fs.statSync(`.${process.env.NODE_ENV}.local.env`).isFile()
+      envFilePath: fs.existsSync(`.${process.env.NODE_ENV}.local.env`)
         ? `.${process.env.NODE_ENV}.local.env`
         : `.${process.env.NODE_ENV}.env`,
       isGlobal: true,

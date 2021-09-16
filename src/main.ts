@@ -17,9 +17,6 @@ function initSwagger(app: INestApplication) {
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  ConfigModule.forRoot({
-    envFilePath: `.${process.env.NODE_ENV}.env`,
-  });
   app.useGlobalPipes(new ValidationPipe());
   app.setGlobalPrefix('api');
   initSwagger(app);
