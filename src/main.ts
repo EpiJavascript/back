@@ -15,7 +15,6 @@ function initSwagger(app: INestApplication) {
   SwaggerModule.setup('swagger', app, document);
 }
 
-
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   ConfigModule.forRoot({
@@ -24,8 +23,6 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
   app.setGlobalPrefix('api');
   initSwagger(app);
-  await app.listen(
-    process.env.PORT ? process.env.PORT : 3001,
-  );
+  await app.listen(process.env.PORT ? process.env.PORT : 3001);
 }
 bootstrap();

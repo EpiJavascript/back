@@ -12,13 +12,13 @@ export class ConfigurationService {
       password: process.env.NEST_APP_TYPEORM_PASSWORD,
       database: process.env.NEST_APP_TYPEORM_DATABASE,
       port: +process.env.NEST_APP_TYPEORM_PORT,
-      synchronize: Boolean(JSON.parse(process.env.NEST_APP_TYPEORM_SYNCHRONIZE)),
+      synchronize: Boolean(
+        JSON.parse(process.env.NEST_APP_TYPEORM_SYNCHRONIZE),
+      ),
       ssl: {
         rejectUnauthorized: false,
       },
-      entities: [
-        User,
-      ]
-    }
+      entities: [User],
+    };
   }
 }

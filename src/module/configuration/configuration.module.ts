@@ -6,6 +6,6 @@ import { ConfigurationService } from './configuration.service';
   imports: [],
   controllers: [],
   providers: [ConfigurationService],
-  exports: [ConfigurationService]
+  exports: [ConfigurationService],
 })
 export class ConfigurationModule {}
