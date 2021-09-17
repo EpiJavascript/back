@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
-import { User } from '../routes/user/user.entity';
+import User from '../routes/user/user.entity';
 
 @Injectable()
-export class ConfigurationService {
-  getDatabaseConfig(): TypeOrmModuleOptions {
+export default class ConfigurationService {
+  static getDatabaseConfig(): TypeOrmModuleOptions {
     return {
       type: 'postgres',
       host: process.env.NEST_APP_TYPEORM_HOST,

@@ -1,16 +1,21 @@
-import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
-import { CreateUserDto, LoginUserDto } from '../user/user.dto';
-import { AuthService } from './auth.service';
-import { User } from '../user/user.entity';
+import {
+  Body, Controller, HttpCode, HttpStatus, Post,
+} from '@nestjs/common';
+import CreateUserDto from '../user/user.create.dto';
+import LoginUserDto from '../user/user.login.dto';
+import AuthService from './auth.service';
+import User from '../user/user.entity';
 
 @Controller('auth')
-export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+export default class AuthController {
+  constructor(private readonly authService: AuthService) {
+    this.authService = authService;
+  }
 
   @Post('login')
   @HttpCode(HttpStatus.OK)
   @HttpCode(HttpStatus.BAD_REQUEST)
-  login(@Body() loginUserDto: LoginUserDto): Promise<String> {
+  login(@Body() loginUserDto: LoginUserDto): Promise<string> {
     return this.authService.login(loginUserDto);
   }
 

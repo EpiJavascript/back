@@ -1,6 +1,6 @@
 import * as Joi from 'joi';
 
-export const validationSchema = Joi.object({
+export default Joi.object({
   // Server config
   NODE_ENV: Joi.string().valid('development', 'production', 'test'),
 

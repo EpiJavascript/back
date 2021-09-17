@@ -1,5 +1,5 @@
 import { Global, Module } from '@nestjs/common';
-import { ConfigurationService } from './configuration.service';
+import ConfigurationService from './configuration.service';
 
 @Global()
 @Module({
@@ -8,4 +8,4 @@ import { ConfigurationService } from './configuration.service';
   providers: [ConfigurationService],
   exports: [ConfigurationService],
 })
-export class ConfigurationModule {}
+export default class ConfigurationModule {}
