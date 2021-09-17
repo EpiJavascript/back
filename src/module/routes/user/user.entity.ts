@@ -13,4 +13,7 @@ export default class User extends Base {
 
   @Column()
   password: string;
+
+  @Column()
+  test: string;
 }
