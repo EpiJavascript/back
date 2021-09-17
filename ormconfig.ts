@@ -17,6 +17,6 @@ export default {
     'src/module/routes/**/*.entity.ts',
   ],
   cli: {
-    migrationsDir: 'src/migration',
+    migrationsDir: 'src/database/migration',
   },
 };

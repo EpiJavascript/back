@@ -2,10 +2,10 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import * as fs from 'fs';
-import ConfigurationService from './module/configuration/configuration.service';
-import UserModule from './module/routes/user/user.module';
-import validationSchema from './module/configuration/schema';
-import AuthModule from './module/routes/auth/auth.module';
+import databaseConfig from './config/database';
+import UserModule from './module/user/user.module';
+import validationSchema from './config/schema';
+import AuthModule from './module/auth/auth.module';
 
 @Module({
   imports: [
@@ -19,7 +19,7 @@ import AuthModule from './module/routes/auth/auth.module';
     }),
     // TypeOrm config
     TypeOrmModule.forRoot({
-      ...ConfigurationService.getDatabaseConfig(),
+      ...databaseConfig(),
     }),
     // Modules
     UserModule,
