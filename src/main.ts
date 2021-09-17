@@ -14,11 +14,11 @@ function initSwagger(app: INestApplication) {
   SwaggerModule.setup('swagger', app, document);
 }
 
-async function bootstrap() {
+async function bootstrap(): Promise<void> {
   const app = await NestFactory.create(AppModule);
   app.useGlobalPipes(new ValidationPipe());
   app.setGlobalPrefix('api');
   initSwagger(app);
   await app.listen(process.env.PORT ? process.env.PORT : 3001);
 }
-bootstrap();
+void bootstrap();

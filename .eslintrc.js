@@ -2,13 +2,13 @@ module.exports = {
   parser: '@typescript-eslint/parser',
   parserOptions: {
     project: 'tsconfig.json',
-    // sourceType: 'module',
+    sourceType: 'module',
   },
   plugins: ['import', '@typescript-eslint/eslint-plugin'],
   extends: [
-    'airbnb-base',
-    'plugin:import/typescript',
     'plugin:@typescript-eslint/recommended',
+    'plugin:@typescript-eslint/recommended-requiring-type-checking',
+    'airbnb-typescript/base',
   ],
   root: true,
   env: {
@@ -16,13 +16,5 @@ module.exports = {
     jest: true,
   },
   ignorePatterns: ['.eslintrc.js'],
-  rules: {
-    'import/extensions': [
-      'error',
-      'ignorePackages',
-      {
-        ts: 'never',
-      },
-    ],
-  },
+  rules: {},
 };
