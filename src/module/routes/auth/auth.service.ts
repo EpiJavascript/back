@@ -1,13 +1,8 @@
-import {
-  HttpCode,
-  HttpException,
-  HttpStatus,
-  Injectable,
-} from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { User } from '../user/user.entity';
 import { CreateUserDto, LoginUserDto } from '../user/user.dto';
 import { UserService } from '../user/user.service';
+import * as jwt from 'jsonwebtoken';
 
 @Injectable()
 export class AuthService {
@@ -23,8 +18,12 @@ export class AuthService {
     if (user.password != loginUserDto.password) {
       throw new HttpException('bad_password', HttpStatus.BAD_REQUEST);
     }
-    console.log(user);
-    return 'oui';
+    const token: String = jwt.sign(
+      { userId: user.id },
+      process.env.JWT_SECRET_KEY,
+    );
+    console.log(token);
+    return token;
   }
 
   register(createUserDto: CreateUserDto): Promise<User> {
