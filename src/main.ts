@@ -8,6 +8,12 @@ function initSwagger(app: INestApplication) {
     .setTitle('EpiJavascript')
     .setDescription('EpiJavascript API description')
     .setVersion('1.0')
+    .addBearerAuth({
+      description: 'Standard Authorization header using the Bearer scheme. Example: "bearer {token}"',
+      in: 'header',
+      name: 'Authorization',
+      type: 'apiKey',
+    })
     .build();
 
   const document = SwaggerModule.createDocument(app, config);

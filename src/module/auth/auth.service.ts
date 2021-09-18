@@ -4,7 +4,7 @@ import User from '../user/user.entity';
 import CreateUserDto from '../user/dto/user.create.dto';
 import LoginUserDto from '../user/dto/user.login.dto';
 import UserService from '../user/user.service';
-import JwtInterface from '../../common/interfaces/jwt';
+import JwtPayloadInterface from '../../common/interfaces/jwt-payload';
 
 @Injectable()
 export default class AuthService {
@@ -21,7 +21,7 @@ export default class AuthService {
       throw new HttpException('bad_password', HttpStatus.BAD_REQUEST);
     }
     const token: string = jwt.sign(
-      { userId: user.id } as JwtInterface,
+      { userId: user.id } as JwtPayloadInterface,
       process.env.JWT_SECRET_KEY,
     );
     return token;
