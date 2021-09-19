@@ -17,7 +17,7 @@ export default class UserService {
     return this.userRepository.find();
   }
 
-  findOne(id: string): Promise<User> {
+  findOne(id: number): Promise<User> {
     return this.userRepository.findOne(id);
   }
 
@@ -25,7 +25,7 @@ export default class UserService {
     return this.userRepository.createQueryBuilder().where({ email }).getOne();
   }
 
-  async remove(id: string): Promise<void> {
+  async remove(id: number): Promise<void> {
     await this.userRepository.delete(id);
   }
 

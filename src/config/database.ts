@@ -1,5 +1,8 @@
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import User from '../module/user/user.entity';
+import Server from '../module/server/server.entity';
+import Channel from '../module/channel/channel.entity';
+
 
 export default (): TypeOrmModuleOptions => {
   return {
@@ -15,6 +18,10 @@ export default (): TypeOrmModuleOptions => {
     ssl: {
       rejectUnauthorized: false,
     },
-    entities: [User],
+    entities: [
+      User,
+      Server,
+      Channel,
+    ],
   };
 };

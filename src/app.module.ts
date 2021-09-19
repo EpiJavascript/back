@@ -6,6 +6,8 @@ import databaseConfig from './config/database';
 import UserModule from './module/user/user.module';
 import validationSchema from './config/schema';
 import AuthModule from './module/auth/auth.module';
+import ServerModule from './module/server/server.module';
+import ChannelModule from './module/channel/channel.module';
 
 @Module({
   imports: [
@@ -24,6 +26,8 @@ import AuthModule from './module/auth/auth.module';
     // Modules
     UserModule,
     AuthModule,
+    ServerModule,
+    ChannelModule,
   ],
 })
 export default class AppModule { }
