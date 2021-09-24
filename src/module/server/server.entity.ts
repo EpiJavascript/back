@@ -7,8 +7,14 @@ export default class Server extends Base {
   @Column()
   name: string;
 
-  @ManyToOne(() => User, user => user.id)
-  @JoinColumn()
+  @Column()
+  userId: number;
+
+  @ManyToOne(() => User, user => user.servers, {
+    eager: true,
+    onDelete: 'CASCADE',
+  })
+  @JoinColumn({ name: 'userId' })
   user: User;
 
   // @OneToMany(() => Channel, channel => channel.id)

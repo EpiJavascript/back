@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { DeepPartial, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import CreateUserDto from './dto/user.create.dto';
 import User from './user.entity';
 
@@ -21,8 +21,12 @@ export default class UserService {
     return this.userRepository.findOne(id);
   }
 
+  findOneOrFail(id: number): Promise<User> {
+    return this.userRepository.findOne(id);
+  }
+
   findByEmail(email: string): Promise<User> {
-    return this.userRepository.createQueryBuilder().where({ email }).getOne();
+    return this.userRepository.findOne({ email });
   }
 
   async remove(id: number): Promise<void> {
@@ -32,9 +36,5 @@ export default class UserService {
   create(createUserDto: CreateUserDto): Promise<User> {
     const user: User = this.userRepository.create(createUserDto);
     return this.userRepository.save(user);
-  }
-
-  generateFromDto(userDto: DeepPartial<User>): User {
-    return this.userRepository.create(userDto);
   }
 }

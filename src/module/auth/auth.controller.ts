@@ -5,6 +5,7 @@ import CreateUserDto from '../user/dto/user.create.dto';
 import LoginUserDto from '../user/dto/user.login.dto';
 import AuthService from './auth.service';
 import User from '../user/user.entity';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
 @Controller('auth')
 export default class AuthController {
@@ -13,6 +14,10 @@ export default class AuthController {
   }
 
   @Post('login')
+  @ApiTags('auth')
+  @ApiOperation({
+    operationId: 'login',
+  })
   @HttpCode(HttpStatus.OK)
   @HttpCode(HttpStatus.BAD_REQUEST)
   login(@Body() loginUserDto: LoginUserDto): Promise<string> {
@@ -20,6 +25,10 @@ export default class AuthController {
   }
 
   @Post('register')
+  @ApiTags('auth')
+  @ApiOperation({
+    operationId: 'register',
+  })
   @HttpCode(HttpStatus.OK)
   @HttpCode(HttpStatus.BAD_REQUEST)
   register(@Body() createUserDto: CreateUserDto): Promise<User> {

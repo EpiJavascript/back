@@ -1,5 +1,5 @@
 import { Controller, Get, HttpCode, HttpStatus, UseGuards } from '@nestjs/common';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import AuthGuard from 'src/common/guards/auth.guard';
 import User from './user.entity';
 import UserService from './user.service';
@@ -16,6 +16,9 @@ export default class UserController {
   @UseGuards(AuthGuard)
   @ApiBearerAuth()
   @ApiTags('user')
+  @ApiOperation({
+    operationId: 'findAll',
+  })
   @HttpCode(HttpStatus.OK)
   @HttpCode(HttpStatus.FORBIDDEN)
   findAll(@Payload() payload: JwtPayloadInterface): Promise<User[]> {

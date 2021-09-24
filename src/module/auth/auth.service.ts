@@ -28,7 +28,6 @@ export default class AuthService {
   }
 
   register(createUserDto: CreateUserDto): Promise<User> {
-    const user: User = this.userService.generateFromDto(createUserDto);
-    return this.userService.create(user);
+    return this.userService.create(createUserDto);
   }
 }

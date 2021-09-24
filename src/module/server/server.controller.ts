@@ -1,5 +1,5 @@
 import { Body, Controller, Get, HttpCode, HttpStatus, Post, UseGuards } from '@nestjs/common';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import AuthGuard from 'src/common/guards/auth.guard';
 import server from './server.entity';
 import ServerService from './server.service';
@@ -18,6 +18,9 @@ export default class ServerController {
   @UseGuards(AuthGuard)
   @ApiBearerAuth()
   @ApiTags('server')
+  @ApiOperation({
+    operationId: 'findAll',
+  })
   @HttpCode(HttpStatus.OK)
   @HttpCode(HttpStatus.FORBIDDEN)
   findAll(@Payload() payload: JwtPayloadInterface): Promise<server[]> {
@@ -29,6 +32,9 @@ export default class ServerController {
   @UseGuards(AuthGuard)
   @ApiBearerAuth()
   @ApiTags('server')
+  @ApiOperation({
+    operationId: 'create',
+  })
   @HttpCode(HttpStatus.CREATED)
   @HttpCode(HttpStatus.FORBIDDEN)
   create(@Payload() payload: JwtPayloadInterface, @Body() createServerDto: CreateServerDto): Promise<Server> {

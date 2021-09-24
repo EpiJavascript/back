@@ -20,8 +20,12 @@ export default class ServerService {
     return this.serverRepository.find();
   }
 
-  findOne(id: string): Promise<Server> {
+  findOne(id: number): Promise<Server> {
     return this.serverRepository.findOne(id);
+  }
+
+  findOneOrFail(id: number): Promise<Server> {
+    return this.serverRepository.findOneOrFail(id);
   }
 
   findByEmail(email: string): Promise<Server> {
@@ -37,7 +41,7 @@ export default class ServerService {
   }
 
   async create(userId: number, createServerDto: CreateServerDto): Promise<Server> {
-    const user: User = await this.userService.findOne(userId);
+    const user: User = await this.userService.findOneOrFail(userId);
     const server: Server = this.serverRepository.create({
       ...createServerDto,
       user: user,

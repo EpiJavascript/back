@@ -1,5 +1,5 @@
 # custom
-.development.local.env
+.env.development.local
 
 # compiled output
 /dist

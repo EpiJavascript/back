@@ -15,6 +15,6 @@ export default class User extends Base {
   @Column()
   password: string;
 
-  @OneToMany(() => Server, server => server.id)
-  server: Server[];
+  @OneToMany(() => Server, server => server.user)
+  servers: Server[];
 }
