@@ -1,4 +1,4 @@
-import { Column, Entity, OneToMany } from 'typeorm';
+import { Column, Entity, ManyToMany, RelationId } from 'typeorm';
 import Base from '../../database/base.entity';
 import Server from '../server/server.entity';
 
@@ -15,6 +15,12 @@ export default class User extends Base {
   @Column()
   password: string;
 
-  @OneToMany(() => Server, server => server.user)
+  /**
+   * Servers relation
+   */
+  @ManyToMany(() => Server, server => server.users)
   servers: Server[];
+
+  @RelationId((user: User) => user.servers)
+  serverIds: number[];
 }

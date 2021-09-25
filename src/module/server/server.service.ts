@@ -44,7 +44,8 @@ export default class ServerService {
     const user: User = await this.userService.findOneOrFail(userId);
     const server: Server = this.serverRepository.create({
       ...createServerDto,
-      user: user,
+      adminUserId: userId,
+      users: [user], // new server, only 1 user
     });
     return this.serverRepository.save(server);
   }

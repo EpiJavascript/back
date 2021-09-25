@@ -1,5 +1,6 @@
-import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
+import { Column, Entity, JoinTable, ManyToMany, OneToMany, RelationId } from 'typeorm';
 import Base from '../../database/base.entity';
+import Channel from '../channel/channel.entity';
 import User from '../user/user.entity';
 
 @Entity()
@@ -8,16 +9,24 @@ export default class Server extends Base {
   name: string;
 
   @Column()
-  userId: number;
+  adminUserId: number;
 
-  @ManyToOne(() => User, user => user.servers, {
-    eager: true,
-    onDelete: 'CASCADE',
-  })
-  @JoinColumn({ name: 'userId' })
-  user: User;
+  /**
+   * Users relation
+   */
+  @ManyToMany(() => User, user => user.servers)
+  @JoinTable()
+  users: User[];
 
-  // @OneToMany(() => Channel, channel => channel.id)
-  // @JoinColumn()
-  // channel: Channel[];
+  @RelationId((server: Server) => server.users)
+  userIds: number[];
+
+  /**
+   * Channels relation
+   */
+  @OneToMany(() => Channel, channel => channel.server)
+  channels: Channel[];
+
+  @RelationId((server: Server) => server.channels)
+  channelsIds: number[];
 }
