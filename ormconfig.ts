@@ -1,6 +1,6 @@
 import * as dotenv from 'dotenv';
 dotenv.config({
-  path: '.development.local.env',
+  path: `.env.${process.env.NODE_ENV}.local`,
 });
 
 export default {
@@ -13,10 +13,13 @@ export default {
   ssl: {
     rejectUnauthorized: false,
   },
+  migrations: [
+    'src/database/migrations/*.ts',
+  ],
   entities: [
-    'src/module/routes/**/*.entity.ts',
+    'src/module/**/*.entity.ts',
   ],
   cli: {
-    migrationsDir: 'src/database/migration',
+    migrationsDir: 'src/database/migrations',
   },
 };
