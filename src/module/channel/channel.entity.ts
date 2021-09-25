@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 import Base from '../../database/base.entity';
 import Server from '../server/server.entity';
 
@@ -7,6 +7,15 @@ export default class Channel extends Base {
   @Column()
   name: string;
 
-  @ManyToOne(() => Server, server => server.channels)
+  /**
+   * Server relation
+   */
+  @ManyToOne(() => Server, server => server.channels, {
+    onDelete: 'CASCADE',
+  })
+  @JoinColumn()
   server: Server;
+
+  @Column()
+  serverId: number;
 }

@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import AuthGuard from 'src/common/guards/auth.guard';
 import server from './server.entity';
@@ -24,8 +24,7 @@ export default class ServerController {
   @HttpCode(HttpStatus.OK)
   @HttpCode(HttpStatus.FORBIDDEN)
   findAll(@Payload() payload: JwtPayloadInterface): Promise<server[]> {
-    console.log(payload); // test purpose
-    return this.serverService.findAll();
+    return this.serverService.findAll(payload.userId);
   }
 
   @Post()
@@ -39,5 +38,18 @@ export default class ServerController {
   @HttpCode(HttpStatus.FORBIDDEN)
   create(@Payload() payload: JwtPayloadInterface, @Body() createServerDto: CreateServerDto): Promise<Server> {
     return this.serverService.create(payload.userId, createServerDto);
+  }
+
+  @Delete(':id')
+  @UseGuards(AuthGuard)
+  @ApiBearerAuth()
+  @ApiTags('server')
+  @ApiOperation({
+    operationId: 'delete',
+  })
+  @HttpCode(HttpStatus.OK)
+  @HttpCode(HttpStatus.FORBIDDEN)
+  remove(@Payload() payload: JwtPayloadInterface, @Param('id') id: string): Promise<void> {
+    return this.serverService.remove(payload.userId, id);
   }
 }

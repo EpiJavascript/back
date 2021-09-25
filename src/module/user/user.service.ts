@@ -35,6 +35,7 @@ export default class UserService {
 
   create(createUserDto: CreateUserDto): Promise<User> {
     const user: User = this.userRepository.create(createUserDto);
+    // check if user.email is already in use to avoid 500 duplicate key (400 better)
     return this.userRepository.save(user);
   }
 }

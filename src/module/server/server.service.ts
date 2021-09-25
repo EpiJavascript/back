@@ -1,6 +1,6 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { DeepPartial, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import Server from './server.entity';
 import CreateServerDto from './dto/server.create.dto';
 import UserService from '../user/user.service';
@@ -16,8 +16,12 @@ export default class ServerService {
     this.serverRepository = serverRepository;
   }
 
-  findAll(): Promise<Server[]> {
-    return this.serverRepository.find();
+  async findAll(userId: number): Promise<Server[]> {
+    return this.serverRepository
+      .createQueryBuilder('server')
+      .leftJoin('server.users', 'user')
+      .where('user.id = :id', { id: userId })
+      .getMany();
   }
 
   findOne(id: number): Promise<Server> {
@@ -32,12 +36,17 @@ export default class ServerService {
     return this.serverRepository.createQueryBuilder().where({ email }).getOne();
   }
 
-  async remove(id: string): Promise<void> {
+  async remove(userId: number, id: string): Promise<void> {
+    const server = await this.serverRepository.findOne({
+      where: {
+        adminUserId: userId,
+        id: id,
+      },
+    });
+    if (server === undefined) {
+      throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED);
+    }
     await this.serverRepository.delete(id);
-  }
-
-  generateFromDto(ServerDto: DeepPartial<Server>): Server {
-    return this.serverRepository.create(ServerDto);
   }
 
   async create(userId: number, createServerDto: CreateServerDto): Promise<Server> {
