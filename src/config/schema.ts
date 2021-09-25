@@ -13,6 +13,7 @@ export default Joi.object({
   NEST_APP_TYPEORM_DATABASE: Joi.string().required(),
   NEST_APP_TYPEORM_SYNCHRONIZE: Joi.boolean().default(false),
 
-  // Jwt config
+  // Encryption config
   JWT_SECRET_KEY: Joi.string().required(),
+  SALT_SECRET_KEY: Joi.string().required(),
 });
