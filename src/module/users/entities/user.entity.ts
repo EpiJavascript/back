@@ -1,6 +1,7 @@
 import { Column, Entity, ManyToMany, RelationId } from 'typeorm';
-import Base from '../../database/common/base.entity';
-import Server from '../server/server.entity';
+
+import Server from '../../servers/entities/server.entity';
+import Base from '../../../database/common/base.entity';
 
 @Entity()
 export default class User extends Base {

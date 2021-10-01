@@ -1,7 +1,8 @@
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
-import User from '../module/user/user.entity';
-import Server from '../module/server/server.entity';
-import Channel from '../module/channel/channel.entity';
+
+import Channel from '../module/channels/entities/channel.entity';
+import Server from '../module/servers/entities/server.entity';
+import User from '../module/users/entities/user.entity';
 
 
 export default (): TypeOrmModuleOptions => {

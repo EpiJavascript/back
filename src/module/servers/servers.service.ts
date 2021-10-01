@@ -1,23 +1,24 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import Server from './server.entity';
+
 import CreateServerDto from './dto/server.create.dto';
-import UserService from '../user/user.service';
-import User from '../user/user.entity';
+import UsersService from '../users/users.service';
+import User from '../users/entities/user.entity';
+import Server from './entities/server.entity';
 
 @Injectable()
-export default class ServerService {
+export default class ServersService {
   constructor(
     @InjectRepository(Server)
-    private serverRepository: Repository<Server>,
-    private userService: UserService,
+    private serversRepository: Repository<Server>,
+    private usersService: UsersService,
   ) {
-    this.serverRepository = serverRepository;
+    this.serversRepository = serversRepository;
   }
 
   async findAll(userId: string): Promise<Server[]> {
-    return this.serverRepository
+    return this.serversRepository
       .createQueryBuilder('server')
       .leftJoin('server.users', 'user')
       .where('user.id = :id', { id: userId })
@@ -25,19 +26,19 @@ export default class ServerService {
   }
 
   findOne(id: string): Promise<Server> {
-    return this.serverRepository.findOne(id);
+    return this.serversRepository.findOne(id);
   }
 
   findOneOrFail(id: string): Promise<Server> {
-    return this.serverRepository.findOneOrFail(id);
+    return this.serversRepository.findOneOrFail(id);
   }
 
   findByEmail(email: string): Promise<Server> {
-    return this.serverRepository.createQueryBuilder().where({ email }).getOne();
+    return this.serversRepository.createQueryBuilder().where({ email }).getOne();
   }
 
   async remove(userId: string, id: string): Promise<void> {
-    const server = await this.serverRepository.findOne({
+    const server = await this.serversRepository.findOne({
       where: {
         adminUserId: userId,
         id: id,
@@ -46,18 +47,18 @@ export default class ServerService {
     if (server === undefined) {
       throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED);
     }
-    await this.serverRepository.delete(id);
+    await this.serversRepository.delete(id);
   }
 
   async create(userId: string, createServerDto: CreateServerDto): Promise<Server> {
-    const user: User = await this.userService.findOneOrFail(userId);
-    const server: Server = this.serverRepository.create({
+    const user: User = await this.usersService.findOneOrFail(userId);
+    const server: Server = this.serversRepository.create({
       ...createServerDto,
       adminUserId: userId,
       createdBy: userId,
       lastUpdatedBy: userId,
       users: [user], // new server, only 1 user
     });
-    return this.serverRepository.save(server);
+    return this.serversRepository.save(server);
   }
 }

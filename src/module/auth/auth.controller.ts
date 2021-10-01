@@ -1,11 +1,10 @@
-import {
-  Body, Controller, HttpCode, HttpStatus, Post,
-} from '@nestjs/common';
-import CreateUserDto from '../user/dto/user.create.dto';
-import LoginUserDto from '../user/dto/user.login.dto';
-import AuthService from './auth.service';
-import User from '../user/user.entity';
+import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
+
+import CreateUserDto from '../users/dto/user.create.dto';
+import LoginUserDto from '../users/dto/user.login.dto';
+import User from '../users/entities/user.entity';
+import AuthService from './auth.service';
 
 @Controller('auth')
 export default class AuthController {

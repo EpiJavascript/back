@@ -1,7 +1,8 @@
 import { Column, Entity, JoinColumn, JoinTable, ManyToMany, OneToMany, OneToOne, RelationId } from 'typeorm';
-import Base from '../../database/common/base.entity';
-import Channel from '../channel/channel.entity';
-import User from '../user/user.entity';
+
+import Channel from '../../channels/entities/channel.entity';
+import Base from '../../../database/common/base.entity';
+import User from '../../users/entities/user.entity';
 
 @Entity()
 export default class Server extends Base {

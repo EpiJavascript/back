@@ -1,15 +1,19 @@
-import { Module } from '@nestjs/common';
+import { QueryFailedExceptionFilter } from './common/filter/query.filter';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
-import * as fs from 'fs';
-import databaseConfig from './config/database';
-import UserModule from './module/user/user.module';
-import validationSchema from './config/schema';
-import AuthModule from './module/auth/auth.module';
-import ServerModule from './module/server/server.module';
-import ChannelModule from './module/channel/channel.module';
 import { APP_FILTER } from '@nestjs/core';
-import { QueryFailedExceptionFilter } from './common/filter/query.filter';
+import { Module } from '@nestjs/common';
+
+import validationSchema from './config/schema';
+import databaseConfig from './config/database';
+import * as fs from 'fs';
+
+import ChannelsModule from './module/channels/channels.module';
+import ServersModule from './module/servers/servers.module';
+import UsersModule from './module/users/users.module';
+
+import AuthModule from './module/auth/auth.module';
+
 
 @Module({
   imports: [
@@ -26,10 +30,10 @@ import { QueryFailedExceptionFilter } from './common/filter/query.filter';
       ...databaseConfig(),
     }),
     // Modules
-    UserModule,
+    UsersModule,
     AuthModule,
-    ServerModule,
-    ChannelModule,
+    ServersModule,
+    ChannelsModule,
   ],
   providers: [
     {

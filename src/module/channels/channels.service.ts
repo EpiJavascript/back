@@ -1,20 +1,21 @@
-import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Injectable } from '@nestjs/common';
 import { Any, Repository } from 'typeorm';
-import Channel from './channel.entity';
+
 import CreateChannelDto from './dto/channel.create.dto';
+import Channel from './entities/channel.entity';
 
 @Injectable()
-export default class ChannelService {
+export default class ChannelsService {
   constructor(
     @InjectRepository(Channel)
-    private channelRepository: Repository<Channel>,
+    private channelsRepository: Repository<Channel>,
   ) {
-    this.channelRepository = channelRepository;
+    this.channelsRepository = channelsRepository;
   }
 
   findAll(userId: string): Promise<Channel[]> {
-    return this.channelRepository.find({
+    return this.channelsRepository.find({
       where: {
         server: {
           userIds: Any([userId]),
@@ -26,16 +27,16 @@ export default class ChannelService {
   }
 
   findOne(id: string): Promise<Channel> {
-    return this.channelRepository.findOne(id);
+    return this.channelsRepository.findOne(id);
   }
 
   async remove(id: string): Promise<void> {
-    await this.channelRepository.delete(id);
+    await this.channelsRepository.delete(id);
   }
 
   create(createChannelDto: CreateChannelDto): Promise<Channel> {
     // Need to check if user is in server
-    const channel: Channel = this.channelRepository.create(createChannelDto);
-    return this.channelRepository.save(channel);
+    const channel: Channel = this.channelsRepository.create(createChannelDto);
+    return this.channelsRepository.save(channel);
   }
 }
