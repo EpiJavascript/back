@@ -20,6 +20,7 @@ export default class ServerController {
   @ApiTags('server')
   @ApiOperation({
     operationId: 'findAll',
+    description: 'Find all your server',
   })
   @HttpCode(HttpStatus.OK)
   @HttpCode(HttpStatus.FORBIDDEN)
@@ -33,6 +34,7 @@ export default class ServerController {
   @ApiTags('server')
   @ApiOperation({
     operationId: 'create',
+    description: 'Create a new server',
   })
   @HttpCode(HttpStatus.CREATED)
   @HttpCode(HttpStatus.FORBIDDEN)
@@ -46,6 +48,7 @@ export default class ServerController {
   @ApiTags('server')
   @ApiOperation({
     operationId: 'delete',
+    description: 'Delete a server (must be server\'s admin)',
   })
   @HttpCode(HttpStatus.OK)
   @HttpCode(HttpStatus.FORBIDDEN)

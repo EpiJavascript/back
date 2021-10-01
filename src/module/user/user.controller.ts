@@ -18,6 +18,7 @@ export default class UserController {
   @ApiTags('user')
   @ApiOperation({
     operationId: 'findAll',
+    description: 'Find all the users',
   })
   @HttpCode(HttpStatus.OK)
   @HttpCode(HttpStatus.FORBIDDEN)

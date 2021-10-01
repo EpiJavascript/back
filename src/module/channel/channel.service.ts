@@ -13,7 +13,7 @@ export default class ChannelService {
     this.channelRepository = channelRepository;
   }
 
-  findAll(userId: number): Promise<Channel[]> {
+  findAll(userId: string): Promise<Channel[]> {
     return this.channelRepository.find({
       where: {
         server: {

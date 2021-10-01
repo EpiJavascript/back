@@ -35,6 +35,6 @@ export default class AuthService {
 
   async register(createUserDto: CreateUserDto): Promise<User> {
     createUserDto.password = hash(createUserDto.password);
-    return this.userService.create(createUserDto);
+    return this.userService.create(null, createUserDto);
   }
 }

@@ -17,6 +17,7 @@ export default class AuthController {
   @ApiTags('auth')
   @ApiOperation({
     operationId: 'login',
+    description: 'Perform a login and get a JWT token',
   })
   @HttpCode(HttpStatus.OK)
   @HttpCode(HttpStatus.BAD_REQUEST)
@@ -28,6 +29,7 @@ export default class AuthController {
   @ApiTags('auth')
   @ApiOperation({
     operationId: 'register',
+    description: 'Perform a register and create an account',
   })
   @HttpCode(HttpStatus.OK)
   @HttpCode(HttpStatus.BAD_REQUEST)

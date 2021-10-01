@@ -1,5 +1,5 @@
 import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
-import Base from '../../database/base.entity';
+import Base from '../../database/common/base.entity';
 import Server from '../server/server.entity';
 
 @Entity()

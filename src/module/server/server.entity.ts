@@ -1,5 +1,5 @@
 import { Column, Entity, JoinColumn, JoinTable, ManyToMany, OneToMany, OneToOne, RelationId } from 'typeorm';
-import Base from '../../database/base.entity';
+import Base from '../../database/common/base.entity';
 import Channel from '../channel/channel.entity';
 import User from '../user/user.entity';
 
@@ -18,7 +18,7 @@ export default class Server extends Base {
   adminUser: User;
 
   @Column()
-  adminUserId: number;
+  adminUserId: string;
 
   /**
    * Users relation
@@ -28,7 +28,7 @@ export default class Server extends Base {
   users: User[];
 
   @RelationId((server: Server) => server.users)
-  userIds: number[];
+  userIds: string[];
 
   /**
    * Channels relation
@@ -37,5 +37,5 @@ export default class Server extends Base {
   channels: Channel[];
 
   @RelationId((server: Server) => server.channels)
-  channelIds: number[];
+  channelIds: string[];
 }

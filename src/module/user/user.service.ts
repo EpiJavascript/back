@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import CreateUserDto from './dto/user.create.dto';
@@ -17,11 +17,11 @@ export default class UserService {
     return this.userRepository.find();
   }
 
-  findOne(id: number): Promise<User> {
+  findOne(id: string): Promise<User> {
     return this.userRepository.findOne(id);
   }
 
-  findOneOrFail(id: number): Promise<User> {
+  findOneOrFail(id: string): Promise<User> {
     return this.userRepository.findOne(id);
   }
 
@@ -29,13 +29,32 @@ export default class UserService {
     return this.userRepository.findOne({ email });
   }
 
-  async remove(id: number): Promise<void> {
+  async remove(id: string): Promise<void> {
     await this.userRepository.delete(id);
   }
 
-  create(createUserDto: CreateUserDto): Promise<User> {
-    const user: User = this.userRepository.create(createUserDto);
-    // check if user.email is already in use to avoid 500 duplicate key (400 better)
-    return this.userRepository.save(user);
+  async create(userId: string | null, createUserDto: CreateUserDto): Promise<User> {
+    const user: User = this.userRepository.create({
+      ...createUserDto,
+      createdBy: userId,
+      lastUpdatedBy: userId,
+    });
+    // Check if email is already taken
+    const duplicateUser: User = await this.userRepository.findOne({ email: createUserDto.email });
+    if (duplicateUser) {
+      throw new HttpException('email already taken', HttpStatus.CONFLICT);
+    }
+
+    // Set createBy and lastUpdatedBy properly
+    const newUser: User = await this.userRepository.save(user);
+    if (newUser.createdBy == null) {
+      newUser.createdBy = newUser.id;
+      newUser.lastUpdatedBy = newUser.id;
+      return this.userRepository.save({
+        id: newUser.id,
+        ...newUser,
+      });
+    }
+    return newUser;
   }
 }
