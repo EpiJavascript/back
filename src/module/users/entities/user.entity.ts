@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToMany, RelationId } from 'typeorm';
+import { Column, Entity, JoinTable, ManyToMany, RelationId } from 'typeorm';
 
 import Server from '../../servers/entities/server.entity';
 import Base from '../../../database/common/base.entity';
@@ -13,7 +13,9 @@ export default class User extends Base {
   @Column()
   username: string;
 
-  @Column()
+  @Column({
+    select: false,
+  })
   password: string;
 
   /**
@@ -24,4 +26,14 @@ export default class User extends Base {
 
   @RelationId((user: User) => user.servers)
   serverIds: string[];
+
+  /**
+   * Friends relation
+   */
+  @ManyToMany(() => User)
+  @JoinTable()
+  friends: User[];
+
+  @RelationId((user: User) => user.friends)
+  friendIds: string[];
 }

@@ -20,7 +20,7 @@ export default class AuthService {
   }
 
   async login(loginUserDto: LoginUserDto): Promise<string> {
-    const user: User = await this.userService.findByEmail(loginUserDto.email);
+    const user: User = await this.userService.findByEmail(loginUserDto.email, true);
     if (user === undefined) {
       throw new HttpException('bad_email', HttpStatus.BAD_REQUEST);
     }
