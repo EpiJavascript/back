@@ -53,19 +53,21 @@ export default class UsersController {
     description: 'Find all received friend requests',
   })
   @ApiQuery({
-    enum: FriendRequestEnum,
     isArray: true,
-    required: false,
+    allowEmptyValue: true,
+    enum: FriendRequestEnum,
+    example: [FriendRequestEnum.ACCEPTED, FriendRequestEnum.PENDING, FriendRequestEnum.REFUSED],
     name: 'type',
   })
   @HttpCode(HttpStatus.CREATED)
   @HttpCode(HttpStatus.FORBIDDEN)
   findAllFriendRequestReceived(@Payload() payload: JwtPayloadInterface, @Query('type') types: FriendRequestEnum[]): Promise<FriendRequest[]> {
-    console.log(types);
     if (!types) {
       types = Object.values(FriendRequestEnum);
     }
-    console.log(types);
+    types = types.filter((value) => {
+      return Object.values(FriendRequestEnum).includes(value);
+    });
     return this.usersService.findAllFriendRequestReceived(payload.userId, types);
   }
 
@@ -78,9 +80,10 @@ export default class UsersController {
     description: 'Find all created friend requests',
   })
   @ApiQuery({
-    enum: FriendRequestEnum,
     isArray: true,
-    required: false,
+    allowEmptyValue: true,
+    enum: FriendRequestEnum,
+    example: [FriendRequestEnum.ACCEPTED, FriendRequestEnum.PENDING, FriendRequestEnum.REFUSED],
     name: 'type',
   })
   @HttpCode(HttpStatus.CREATED)
@@ -89,6 +92,9 @@ export default class UsersController {
     if (!types) {
       types = Object.values(FriendRequestEnum);
     }
+    types = types.filter((value) => {
+      return Object.values(FriendRequestEnum).includes(value);
+    });
     return this.usersService.findAllFriendRequestCreated(payload.userId, types);
   }
 
