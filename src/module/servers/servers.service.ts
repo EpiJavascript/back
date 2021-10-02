@@ -13,9 +13,7 @@ export default class ServersService {
     @InjectRepository(Server)
     private serversRepository: Repository<Server>,
     private usersService: UsersService,
-  ) {
-    this.serversRepository = serversRepository;
-  }
+  ) { }
 
   async findAll(userId: string): Promise<Server[]> {
     return this.serversRepository
@@ -41,7 +39,7 @@ export default class ServersService {
     const server = await this.serversRepository.findOne({
       where: {
         adminUserId: userId,
-        id: id,
+        id,
       },
     });
     if (server === undefined) {

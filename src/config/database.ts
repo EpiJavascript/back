@@ -1,4 +1,5 @@
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
+import FriendRequest from 'src/module/users/entities/friend-request.entity';
 
 import Channel from '../module/channels/entities/channel.entity';
 import Server from '../module/servers/entities/server.entity';
@@ -23,6 +24,7 @@ export default (): TypeOrmModuleOptions => {
       User,
       Server,
       Channel,
+      FriendRequest,
     ],
   };
 };

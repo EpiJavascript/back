@@ -10,9 +10,7 @@ export default class ChannelsService {
   constructor(
     @InjectRepository(Channel)
     private channelsRepository: Repository<Channel>,
-  ) {
-    this.channelsRepository = channelsRepository;
-  }
+  ) { }
 
   findAll(userId: string): Promise<Channel[]> {
     return this.channelsRepository.find({

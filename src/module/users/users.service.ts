@@ -1,7 +1,9 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Any, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
 
+import { FriendRequestEnum } from './enums/friend-request.enum';
+import FriendRequest from './entities/friend-request.entity';
 import CreateUserDto from './dto/user.create.dto';
 import User from './entities/user.entity';
 
@@ -9,11 +11,12 @@ import User from './entities/user.entity';
 export default class UserService {
   constructor(
     @InjectRepository(User)
-    private usersRepository: Repository<User>,
-  ) {
-    this.usersRepository = usersRepository;
-  }
+    private readonly usersRepository: Repository<User>,
+    @InjectRepository(FriendRequest)
+    private readonly friendRequestsReposiroty: Repository<FriendRequest>,
+  ) { }
 
+  // Users
   findAll(): Promise<User[]> {
     return this.usersRepository.find();
   }
@@ -57,5 +60,39 @@ export default class UserService {
       });
     }
     return newUser;
+  }
+
+  // Friend requests
+  async createFriendRequest(userId: string, requestedUserId: string): Promise<FriendRequest> {
+    const user: User = await this.findOneOrFail(requestedUserId);
+    if (user.id == requestedUserId) {
+      throw new HttpException('Cannot self request as friend', HttpStatus.BAD_REQUEST);
+    }
+    const friendRequest: FriendRequest = this.friendRequestsReposiroty.create({
+      user,
+      createdBy: userId,
+      lastUpdatedBy: userId,
+    });
+    return this.friendRequestsReposiroty.save(friendRequest);
+  }
+
+  findAllFriendRequestReceived(userId: string, types: FriendRequestEnum[]): Promise<FriendRequest[]> {
+    return this.friendRequestsReposiroty.find({
+      where: {
+        user: {
+          id: userId,
+        },
+        type: Any(types),
+      },
+    });
+  }
+
+  findAllFriendRequestCreated(userId: string, types: FriendRequestEnum[]): Promise<FriendRequest[]> {
+    return this.friendRequestsReposiroty.find({
+      where: {
+        createdBy: userId,
+        type: Any(types),
+      },
+    });
   }
 }
