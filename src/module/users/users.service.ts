@@ -74,17 +74,18 @@ export default class UserService {
   // Friend requests
   async createFriendRequest(userId: string, otherUserId: string): Promise<FriendRequest> {
     // TODO check if users are already friends
-    const user: User = await this.usersRepository.findOneOrFail(otherUserId);
+    const otherUser: User = await this.usersRepository.findOneOrFail(otherUserId);
+    const user: User = await this.usersRepository.findOneOrFail(userId);
     if (userId == otherUserId) {
       throw new HttpException('Cannot self request as friend', HttpStatus.BAD_REQUEST);
     }
 
     // Check if a friend request is already pending
     const tmp: FriendRequest[] = await this.friendRequestsReposiroty.find({
-      relations: ['user'],
+      relations: ['requestedUser'],
       where: {
         createdBy: userId,
-        user: {
+        requestedUser: {
           id: otherUserId,
         },
         type: FriendRequestEnum.PENDING,
@@ -95,7 +96,8 @@ export default class UserService {
     }
 
     const friendRequest: FriendRequest = this.friendRequestsReposiroty.create({
-      user,
+      requestedUser: otherUser,
+      createdByUser: user,
       createdBy: userId,
       lastUpdatedBy: userId,
     });
@@ -103,14 +105,15 @@ export default class UserService {
   }
 
   findAllFriendRequestsReceived(userId: string, types: FriendRequestEnum[]): Promise<FriendRequest[]> {
+    // Should left join user on createdBy
     return this.friendRequestsReposiroty.find({
       where: {
-        user: {
+        requestedUser: {
           id: userId,
         },
         type: Any(types),
       },
-      relations: ['user'],
+      relations: ['requestedUser', 'createdByUser'],
     });
   }
 
@@ -120,13 +123,13 @@ export default class UserService {
         createdBy: userId,
         type: Any(types),
       },
-      relations: ['user'],
+      relations: ['requestedUser'],
     });
   }
 
   async acceptFriendRequest(userId: string, friendRequestId: string): Promise<User> {
     const friendRequest: FriendRequest = await this.friendRequestsReposiroty.findOneOrFail(friendRequestId, {
-      relations: ['user'],
+      relations: ['requestedUser'],
     });
     const actualUser: User = await this.usersRepository.findOneOrFail(userId, {
       relations: ['friends'],
@@ -135,9 +138,8 @@ export default class UserService {
       relations: ['friends'],
     });
 
-    console.log('otherUser', otherUser);
     // Check if friendRequest has been resolved and targeted user is the actual user
-    if (friendRequest.type != FriendRequestEnum.PENDING || friendRequest.user.id != userId) {
+    if (friendRequest.type != FriendRequestEnum.PENDING || friendRequest.requestedUser.id != userId) {
       throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED);
     }
 
@@ -161,7 +163,7 @@ export default class UserService {
     });
 
     // Check if friendRequest has been resolved and targeted user is the actual user
-    if (friendRequest.type != FriendRequestEnum.PENDING || friendRequest.user.id != userId) {
+    if (friendRequest.type != FriendRequestEnum.PENDING || friendRequest.requestedUser.id != userId) {
       throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED);
     }
 

@@ -7,7 +7,10 @@ import User from './user.entity';
 @Entity()
 export default class FriendRequest extends Base {
   @ManyToOne(() => User)
-  user: User;
+  createdByUser: User;
+
+  @ManyToOne(() => User)
+  requestedUser: User;
 
   @Column({
     type: 'enum',
