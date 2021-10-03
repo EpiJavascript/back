@@ -1,9 +1,10 @@
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
-import FriendRequest from 'src/module/users/entities/friend-request.entity';
 
-import Channel from '../module/channels/entities/channel.entity';
-import Server from '../module/servers/entities/server.entity';
-import User from '../module/users/entities/user.entity';
+import FriendRequest from 'src/module/users/entities/friend-request.entity';
+import Message from 'src/module/messages/entities/message.entity';
+import Channel from 'src/module/channels/entities/channel.entity';
+import Server from 'src/module/servers/entities/server.entity';
+import User from 'src/module/users/entities/user.entity';
 
 
 export default (): TypeOrmModuleOptions => {
@@ -24,6 +25,7 @@ export default (): TypeOrmModuleOptions => {
       User,
       Server,
       Channel,
+      Message,
       FriendRequest,
     ],
   };

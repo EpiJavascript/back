@@ -1,7 +1,7 @@
 import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 
-import Base from '../../../database/common/base.entity';
-import Server from '../../servers/entities/server.entity';
+import Server from 'src/module/servers/entities/server.entity';
+import Base from 'src/database/common/base.entity';
 
 @Entity()
 export default class Channel extends Base {

@@ -4,7 +4,7 @@ import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import JwtPayloadInterface from 'src/common/interfaces/jwt-payload';
 import { Payload } from 'src/common/decorators/payload.decorator';
 import CreateChannelDto from './dto/channel.create.dto';
-import AuthGuard from '../../common/guards/auth.guard';
+import AuthGuard from 'src/common/guards/auth.guard';
 import ChannelsService from './channels.service';
 import Channel from './entities/channel.entity';
 

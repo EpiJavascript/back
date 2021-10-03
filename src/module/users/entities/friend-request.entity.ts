@@ -1,7 +1,7 @@
 import { Column, Entity, ManyToOne } from 'typeorm';
 
-import { FriendRequestEnum } from '../enums/friend-request.enum';
-import Base from '../../../database/common/base.entity';
+import { FriendRequestEnum } from 'src/module/users/enums/friend-request.enum';
+import Base from 'src/database/common/base.entity';
 import User from './user.entity';
 
 @Entity()

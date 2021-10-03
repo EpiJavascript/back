@@ -9,6 +9,7 @@ import databaseConfig from './config/database';
 import * as fs from 'fs';
 
 import ChannelsModule from './module/channels/channels.module';
+import MessagesModule from './module/messages/messages.module';
 import ServersModule from './module/servers/servers.module';
 import UsersModule from './module/users/users.module';
 import AuthModule from './module/auth/auth.module';
@@ -29,10 +30,11 @@ import AuthModule from './module/auth/auth.module';
       ...databaseConfig(),
     }),
     // Modules
-    UsersModule,
     AuthModule,
+    UsersModule,
     ServersModule,
     ChannelsModule,
+    MessagesModule,
   ],
   providers: [
     {

@@ -2,11 +2,11 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import * as jwt from 'jsonwebtoken';
 import * as crypto from 'crypto';
 
-import JwtPayloadInterface from '../../common/interfaces/jwt-payload';
-import CreateUserDto from '../users/dto/user.create.dto';
-import LoginUserDto from '../users/dto/user.login.dto';
-import User from '../users/entities/user.entity';
-import UserService from '../users/users.service';
+import JwtPayloadInterface from 'src/common/interfaces/jwt-payload';
+import CreateUserDto from 'src/module/users/dto/user.create.dto';
+import LoginUserDto from 'src/module/users/dto/user.login.dto';
+import User from 'src/module/users/entities/user.entity';
+import UserService from 'src/module/users/users.service';
 
 
 function hash(str: string): string {

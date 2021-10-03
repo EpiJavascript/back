@@ -1,9 +1,9 @@
 import { Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Query, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
 
-import { FriendRequestEnum } from './enums/friend-request.enum';
-import { Payload } from '../../common/decorators/payload.decorator';
 import JwtPayloadInterface from 'src/common/interfaces/jwt-payload';
+import { Payload } from 'src/common/decorators/payload.decorator';
+import { FriendRequestEnum } from './enums/friend-request.enum';
 import FriendRequest from './entities/friend-request.entity';
 import AuthGuard from 'src/common/guards/auth.guard';
 import UsersService from './users.service';
