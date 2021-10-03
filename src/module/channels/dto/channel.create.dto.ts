@@ -11,10 +11,10 @@ export default class CreateChannelDto {
   name: string;
 
   @IsNotEmpty()
-  @IsNumber()
+  @IsString()
   @ApiProperty({
     description: 'Id of the server',
-    example: 1,
+    example: '35aebf71-037d-4b3b-9a53-6327a83a9354',
   })
-  serverId: number;
+  serverId: string;
 }

@@ -1,5 +1,6 @@
-import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
+import { Column, Entity, ManyToOne } from 'typeorm';
 
+import PrivateChannel from 'src/module/channels/entities/private-channel.entity';
 import Channel from '../../channels/entities/channel.entity';
 import Base from '../../../database/common/base.entity';
 
@@ -10,8 +11,11 @@ export default class Message extends Base {
 
   @ManyToOne(() => Channel, channel => channel.messages, {
     onDelete: 'CASCADE',
-    nullable: false,
   })
-  @JoinColumn()
   channel: Channel;
+
+  @ManyToOne(() => PrivateChannel, privateChannel => privateChannel.messages, {
+    onDelete: 'CASCADE',
+  })
+  privateChannel: PrivateChannel;
 }

@@ -8,7 +8,7 @@ import CreateUserDto from './dto/user.create.dto';
 import User from './entities/user.entity';
 
 @Injectable()
-export default class UserService {
+export default class UsersService {
   constructor(
     @InjectRepository(User)
     private readonly usersRepository: Repository<User>,
@@ -32,6 +32,12 @@ export default class UserService {
   findOneOrFail(id: string): Promise<User> {
     return this.usersRepository.findOne(id, {
       relations: ['friends', 'servers'],
+    });
+  }
+
+  findByIds(ids: string[], relations = []): Promise<User[]> {
+    return this.usersRepository.findByIds(ids, {
+      relations,
     });
   }
 

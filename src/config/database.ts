@@ -5,6 +5,7 @@ import Message from 'src/module/messages/entities/message.entity';
 import Channel from 'src/module/channels/entities/channel.entity';
 import Server from 'src/module/servers/entities/server.entity';
 import User from 'src/module/users/entities/user.entity';
+import PrivateChannel from 'src/module/channels/entities/private-channel.entity';
 
 
 export default (): TypeOrmModuleOptions => {
@@ -27,6 +28,7 @@ export default (): TypeOrmModuleOptions => {
       Channel,
       Message,
       FriendRequest,
+      PrivateChannel,
     ],
   };
 };
