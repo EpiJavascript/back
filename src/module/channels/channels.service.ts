@@ -1,7 +1,8 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Any, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 
+import CreatePrivateChannelDto from './dto/private-channel.dto';
 import PrivateChannel from './entities/private-channel.entity';
 import CreateChannelDto from './dto/channel.create.dto';
 import ServersService from '../servers/servers.service';
@@ -9,7 +10,6 @@ import Server from '../servers/entities/server.entity';
 import UsersService from '../users/users.service';
 import User from '../users/entities/user.entity';
 import Channel from './entities/channel.entity';
-import CreatePrivateChannelDto from './dto/private-channel.dto';
 
 @Injectable()
 export default class ChannelsService {
