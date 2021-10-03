@@ -14,7 +14,9 @@ export default class MessagesService {
 
   findAll(userId: string): Promise<Message[]> {
     console.log(userId);
-    return this.messagesRepository.find();
+    return this.messagesRepository.find({
+      relations: ['channel'],
+    });
   }
 
   findOne(id: string): Promise<Message> {

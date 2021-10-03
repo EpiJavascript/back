@@ -3,10 +3,10 @@ import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 
 import JwtPayloadInterface from 'src/common/interfaces/jwt-payload';
 import { Payload } from 'src/common/decorators/payload.decorator';
+import CreateMessageDto from './dto/message.create.dto';
 import AuthGuard from 'src/common/guards/auth.guard';
 import MessagesService from './messages.service';
 import Message from './entities/message.entity';
-import CreateMessageDto from './dto/message.create.dto';
 
 @Controller('messages')
 export default class MessagesController {
@@ -30,10 +30,10 @@ export default class MessagesController {
   @Post()
   @UseGuards(AuthGuard)
   @ApiBearerAuth()
-  @ApiTags('servers')
+  @ApiTags('messages')
   @ApiOperation({
     operationId: 'create',
-    description: 'Create a new server',
+    description: 'Create a new message',
   })
   @HttpCode(HttpStatus.CREATED)
   @HttpCode(HttpStatus.FORBIDDEN)

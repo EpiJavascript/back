@@ -1,10 +1,10 @@
 import { Body, Controller, Get, HttpCode, HttpStatus, Post, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 
-import JwtPayloadInterface from 'src/common/interfaces/jwt-payload';
-import { Payload } from 'src/common/decorators/payload.decorator';
+import JwtPayloadInterface from '../../common/interfaces/jwt-payload';
+import { Payload } from '../../common/decorators/payload.decorator';
 import CreateChannelDto from './dto/channel.create.dto';
-import AuthGuard from 'src/common/guards/auth.guard';
+import AuthGuard from '../../common/guards/auth.guard';
 import ChannelsService from './channels.service';
 import Channel from './entities/channel.entity';
 
@@ -36,7 +36,7 @@ export default class ChannelsController {
   })
   @HttpCode(HttpStatus.CREATED)
   @HttpCode(HttpStatus.FORBIDDEN)
-  create(@Body() createChannelDto: CreateChannelDto): Promise<Channel> {
-    return this.channelsService.create(createChannelDto);
+  create(@Payload() payload: JwtPayloadInterface, @Body() createChannelDto: CreateChannelDto): Promise<Channel> {
+    return this.channelsService.create(payload.userId, createChannelDto);
   }
 }

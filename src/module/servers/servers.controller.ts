@@ -1,10 +1,10 @@
 import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 
-import JwtPayloadInterface from 'src/common/interfaces/jwt-payload';
-import { Payload } from 'src/common/decorators/payload.decorator';
+import JwtPayloadInterface from '../../common/interfaces/jwt-payload';
+import { Payload } from '../../common/decorators/payload.decorator';
+import AuthGuard from '../../common/guards/auth.guard';
 import CreateServerDto from './dto/server.create.dto';
-import AuthGuard from 'src/common/guards/auth.guard';
 import ServersService from './servers.service';
 import server from './entities/server.entity';
 import Server from './entities/server.entity';

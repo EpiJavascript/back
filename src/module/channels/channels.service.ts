@@ -32,9 +32,13 @@ export default class ChannelsService {
     await this.channelsRepository.delete(id);
   }
 
-  create(createChannelDto: CreateChannelDto): Promise<Channel> {
+  create(userId: string, createChannelDto: CreateChannelDto): Promise<Channel> {
     // Need to check if user is in server
     const channel: Channel = this.channelsRepository.create(createChannelDto);
-    return this.channelsRepository.save(channel);
+    return this.channelsRepository.save({
+      ...channel,
+      createdBy: userId,
+      lastUpdatedBy: userId,
+    });
   }
 }
