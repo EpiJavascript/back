@@ -28,6 +28,10 @@ export default class ChannelsService {
     return this.channelsRepository.findOne(id);
   }
 
+  findOneOrFail(id: string): Promise<Channel> {
+    return this.channelsRepository.findOneOrFail(id);
+  }
+
   async remove(id: string): Promise<void> {
     await this.channelsRepository.delete(id);
   }
