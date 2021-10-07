@@ -15,7 +15,7 @@ export default class UserTextChannel extends Base {
   /**
    * Users relation
    */
-  @ManyToMany(() => User, user => user.userTextChannel)
+  @ManyToMany(() => User, user => user.userTextChannels)
   @JoinTable()
   users: User[];
 
