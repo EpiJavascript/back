@@ -1,11 +1,13 @@
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 
-import FriendRequest from 'src/module/users/entities/friend-request.entity';
+import ServerTextChannel from 'src/module/server-channels/entities/server-text-channel.entity';
+import UserTextChannel from 'src/module/user-channels/entities/user-text-channel.entity';
+import PrivateChannel from 'src/module/user-channels/entities/user-text-channel.entity';
+import FriendRequest from 'src/module/friend-request/entities/friend-request.entity';
+import MessageFlux from 'src/module/messages/entities/message-flux.entity';
 import Message from 'src/module/messages/entities/message.entity';
-import Channel from 'src/module/channels/entities/channel.entity';
 import Server from 'src/module/servers/entities/server.entity';
 import User from 'src/module/users/entities/user.entity';
-import PrivateChannel from 'src/module/channels/entities/private-channel.entity';
 
 
 export default (): TypeOrmModuleOptions => {
@@ -25,10 +27,12 @@ export default (): TypeOrmModuleOptions => {
     entities: [
       User,
       Server,
-      Channel,
       Message,
+      MessageFlux,
       FriendRequest,
       PrivateChannel,
+      UserTextChannel,
+      ServerTextChannel,
     ],
   };
 };

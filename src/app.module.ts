@@ -1,22 +1,56 @@
 import { QueryFailedExceptionFilter } from './common/filter/query.filter';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
-import { APP_FILTER } from '@nestjs/core';
+import { APP_FILTER, RouterModule, Routes } from '@nestjs/core';
 import { Module } from '@nestjs/common';
 
 import validationSchema from './config/schema';
 import databaseConfig from './config/database';
 import * as fs from 'fs';
 
-import ChannelsModule from './module/channels/channels.module';
+import ServerChannelsModule from './module/server-channels/server-channels.module';
+import UserChannelsModule from './module/user-channels/user-channels.module';
 import MessagesModule from './module/messages/messages.module';
 import ServersModule from './module/servers/servers.module';
 import UsersModule from './module/users/users.module';
 import AuthModule from './module/auth/auth.module';
+import FriendRequestsModule from './module/friend-request/friend-requests.module';
 
+const routes: Routes = [
+  {
+    path: 'users',
+    module: UsersModule,
+    children: [
+      {
+        path: 'channels',
+        module: UserChannelsModule,
+      },
+      {
+        path: 'friend-requests',
+        module: FriendRequestsModule,
+      },
+    ],
+  },
+  {
+    path: 'servers',
+    module: ServersModule,
+    children: [
+      {
+        path: ':serverId/channels',
+        module: ServerChannelsModule,
+      },
+    ],
+  },
+  {
+    path: 'auth',
+    module: AuthModule,
+  },
+];
 
 @Module({
   imports: [
+    // router config
+    RouterModule.register(routes),
     // dotenv Config
     ConfigModule.forRoot({
       envFilePath: fs.existsSync(`.env.${process.env.NODE_ENV}.local`)
@@ -33,8 +67,10 @@ import AuthModule from './module/auth/auth.module';
     AuthModule,
     UsersModule,
     ServersModule,
-    ChannelsModule,
     MessagesModule,
+    UserChannelsModule,
+    FriendRequestsModule,
+    ServerChannelsModule,
   ],
   providers: [
     {

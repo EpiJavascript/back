@@ -1,20 +1,20 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 
-import Message from '../../messages/entities/message.entity';
+import MessageFlux from 'src/module/messages/entities/message-flux.entity';
 import Server from '../../servers/entities/server.entity';
 import Base from '../../../database/common/base.entity';
 
 @Entity()
-export default class Channel extends Base {
+export default class ServerTextChannel extends Base {
   @Column()
   name: string;
 
   /**
-   * Messages relation
+   * MessageFlux relation
    */
-  @OneToMany(() => Message, message => message.channel)
-  messages: Message[];
-
+  @ManyToOne(() => MessageFlux)
+  messageFlux: MessageFlux;
+ 
   /**
    * Server relation
    */

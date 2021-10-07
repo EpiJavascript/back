@@ -2,7 +2,7 @@ import { Column, Entity, JoinTable, ManyToMany, RelationId } from 'typeorm';
 
 import Server from '../../servers/entities/server.entity';
 import Base from '../../../database/common/base.entity';
-import PrivateChannel from 'src/module/channels/entities/private-channel.entity';
+import UserTextChannel from 'src/module/user-channels/entities/user-text-channel.entity';
 
 @Entity()
 export default class User extends Base {
@@ -39,11 +39,11 @@ export default class User extends Base {
   friendIds: string[];
 
   /**
-   * PrivateChannels relation
+   * UserTextChannel relation
    */
-  @ManyToMany(() => PrivateChannel, privateChannel => privateChannel.users)
-  privateChannels: PrivateChannel[];
+  @ManyToMany(() => UserTextChannel, userTextChannel => userTextChannel.users)
+  userTextChannel: UserTextChannel[];
 
-  @RelationId((user: User) => user.privateChannels)
+  @RelationId((user: User) => user.userTextChannel)
   privateServerIds: string[];
 }

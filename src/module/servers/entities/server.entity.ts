@@ -1,6 +1,6 @@
 import { Column, Entity, JoinColumn, JoinTable, ManyToMany, OneToMany, OneToOne, RelationId } from 'typeorm';
 
-import Channel from '../../channels/entities/channel.entity';
+import Channel from '../../server-channels/entities/server-text-channel.entity';
 import Base from '../../../database/common/base.entity';
 import User from '../../users/entities/user.entity';
 

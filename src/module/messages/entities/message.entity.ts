@@ -1,21 +1,16 @@
 import { Column, Entity, ManyToOne } from 'typeorm';
 
-import PrivateChannel from 'src/module/channels/entities/private-channel.entity';
-import Channel from '../../channels/entities/channel.entity';
 import Base from '../../../database/common/base.entity';
+import MessageFlux from './message-flux.entity';
 
 @Entity()
 export default class Message extends Base {
   @Column()
   message: string;
 
-  @ManyToOne(() => Channel, channel => channel.messages, {
+  @ManyToOne(() => MessageFlux, messageFlux => messageFlux.messages, {
     onDelete: 'CASCADE',
+    nullable: false,
   })
-  channel: Channel;
-
-  @ManyToOne(() => PrivateChannel, privateChannel => privateChannel.messages, {
-    onDelete: 'CASCADE',
-  })
-  privateChannel: PrivateChannel;
+  messageFlux: MessageFlux;
 }

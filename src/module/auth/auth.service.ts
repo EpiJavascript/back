@@ -3,8 +3,8 @@ import * as jwt from 'jsonwebtoken';
 import * as crypto from 'crypto';
 
 import JwtPayloadInterface from '../../common/interfaces/jwt-payload';
-import CreateUserDto from '../users/dto/user.create.dto';
-import LoginUserDto from '../users/dto/user.login.dto';
+import CreateUserDto from '../users/dto/create-user.dto';
+import LoginUserDto from '../users/dto/login-user.dto';
 import User from '../users/entities/user.entity';
 import UserService from '../users/users.service';
 

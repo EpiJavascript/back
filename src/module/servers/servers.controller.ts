@@ -9,7 +9,8 @@ import ServersService from './servers.service';
 import server from './entities/server.entity';
 import Server from './entities/server.entity';
 
-@Controller('servers')
+@Controller()
+@ApiTags('servers')
 export default class ServersController {
   constructor(private readonly serversService: ServersService) {
     this.serversService = serversService;
@@ -18,7 +19,6 @@ export default class ServersController {
   @Get()
   @UseGuards(AuthGuard)
   @ApiBearerAuth()
-  @ApiTags('servers')
   @ApiOperation({
     operationId: 'findAll',
     description: 'Find all your server',
@@ -32,7 +32,6 @@ export default class ServersController {
   @Post()
   @UseGuards(AuthGuard)
   @ApiBearerAuth()
-  @ApiTags('servers')
   @ApiOperation({
     operationId: 'create',
     description: 'Create a new server',
@@ -46,7 +45,6 @@ export default class ServersController {
   @Delete(':id')
   @UseGuards(AuthGuard)
   @ApiBearerAuth()
-  @ApiTags('servers')
   @ApiOperation({
     operationId: 'delete',
     description: 'Delete a server (must be server\'s admin)',

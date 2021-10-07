@@ -2,24 +2,22 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 
-import CreateMessageDto from './dto/message.create.dto';
+import MessageFlux from './entities/message-flux.entity';
+import CreateMessageDto from './dto/create-message.dto';
 import Message from './entities/message.entity';
-import Channel from '../channels/entities/channel.entity';
-import ChannelsService from '../channels/channels.service';
 
 @Injectable()
 export default class MessagesService {
   constructor(
     @InjectRepository(Message)
-    private messagesRepository: Repository<Message>,
-    private channelsService: ChannelsService,
+    private readonly messagesRepository: Repository<Message>,
+    @InjectRepository(MessageFlux)
+    private readonly messageFluxesRepository: Repository<MessageFlux>,
   ) { }
 
   findAll(userId: string): Promise<Message[]> {
     console.log(userId);
-    return this.messagesRepository.find({
-      relations: ['channel'],
-    });
+    return this.messagesRepository.find();
   }
 
   findOne(id: string): Promise<Message> {
@@ -32,10 +30,15 @@ export default class MessagesService {
 
   async create(userId: string, createMessageDto: CreateMessageDto): Promise<Message> {
     const message: Message = this.messagesRepository.create(createMessageDto);
-    const channel: Channel = await this.channelsService.findOneOrFail(createMessageDto.channelId);
     return this.messagesRepository.save({
       ...message,
-      channel,
+      createdBy: userId,
+      lastUpdatedBy: userId,
+    });
+  }
+
+  async createFlux(userId: string): Promise<MessageFlux> {
+    return this.messageFluxesRepository.save({
       createdBy: userId,
       lastUpdatedBy: userId,
     });
