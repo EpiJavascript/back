@@ -5,6 +5,7 @@ import CreateUserDto from '../users/dto/create-user.dto';
 import LoginUserDto from '../users/dto/login-user.dto';
 import User from '../users/entities/user.entity';
 import AuthService from './auth.service';
+import AuthDto from './dto/auth.dto';
 
 @Controller()
 @ApiTags('auth')
@@ -20,7 +21,7 @@ export default class AuthController {
   })
   @HttpCode(HttpStatus.OK)
   @HttpCode(HttpStatus.BAD_REQUEST)
-  login(@Body() loginUserDto: LoginUserDto): Promise<string> {
+  login(@Body() loginUserDto: LoginUserDto): Promise<AuthDto> {
     return this.authService.login(loginUserDto);
   }
 

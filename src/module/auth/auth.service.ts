@@ -7,6 +7,7 @@ import CreateUserDto from '../users/dto/create-user.dto';
 import LoginUserDto from '../users/dto/login-user.dto';
 import User from '../users/entities/user.entity';
 import UserService from '../users/users.service';
+import AuthDto from './dto/auth.dto';
 
 
 function hash(str: string): string {
@@ -19,7 +20,7 @@ export default class AuthService {
     this.userService = userService;
   }
 
-  async login(loginUserDto: LoginUserDto): Promise<string> {
+  async login(loginUserDto: LoginUserDto): Promise<AuthDto> {
     const user: User = await this.userService.findByEmail(loginUserDto.email, true);
     if (user === undefined) {
       throw new HttpException('bad_email', HttpStatus.BAD_REQUEST);
@@ -31,7 +32,7 @@ export default class AuthService {
       { userId: user.id } as JwtPayloadInterface,
       process.env.JWT_SECRET_KEY,
     );
-    return token;
+    return new AuthDto({ token, username: user.username, email: user.email });
   }
 
   async register(createUserDto: CreateUserDto): Promise<User> {
