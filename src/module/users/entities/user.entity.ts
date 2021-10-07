@@ -42,8 +42,8 @@ export default class User extends Base {
    * UserTextChannel relation
    */
   @ManyToMany(() => UserTextChannel, userTextChannel => userTextChannel.users)
-  userTextChannel: UserTextChannel[];
+  userTextChannels: UserTextChannel[];
 
-  @RelationId((user: User) => user.userTextChannel)
-  privateServerIds: string[];
+  @RelationId((user: User) => user.userTextChannels)
+  userTextChannelIds: string[];
 }
