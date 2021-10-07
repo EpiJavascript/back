@@ -1,10 +1,10 @@
-import { Controller } from '@nestjs/common';
+import { Controller, Get } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 
 import ChannelsService from './user-channels.service';
 import MessagesService from '../messages/messages.service';
 
-@ApiTags('userChannels')
+@ApiTags()
 @Controller()
 export default class UserChannelsController {
   constructor(
@@ -12,4 +12,8 @@ export default class UserChannelsController {
     private readonly userMessagesService: MessagesService) {
   }
 
+  @Get()
+  test(): void {
+    console.log('here');
+  }
 }
