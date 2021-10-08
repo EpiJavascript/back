@@ -1,0 +1,1 @@
+export { default as CreateUserTextChannelDto } from './create-user-text-channel.dto';

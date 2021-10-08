@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 
-import CreateUserTextChannelDto from './dto/create-user-text-channel.dto';
+import { CreateUserTextChannelDto } from './dto';
 import UserTextChannel from './entities/user-text-channel.entity';
 import PrivateChannel from './entities/user-text-channel.entity';
 import UsersService from '../users/users.service';
@@ -17,11 +17,14 @@ export default class UserChannelsService {
   ) { }
   
   async findAll(userId: string): Promise<PrivateChannel[]> {
-    return this.userTextChannelsRepository
-      .createQueryBuilder('private_channel')
-      .leftJoin('private_channel.users', 'user')
-      .where('user.id = :id', { id: userId })
-      .getMany();
+    return this.userTextChannelsRepository.find({
+      where: {
+        users: {
+          id: In([userId]),
+        },
+      },
+      relations: ['users'],
+    });
   }
 
   findOne(id: string): Promise<UserTextChannel> {
@@ -37,10 +40,10 @@ export default class UserChannelsService {
   }
 
 
-  async create(userId: string, createPrivateChannelDto: CreateUserTextChannelDto): Promise<PrivateChannel> {
-    const users: User[] = await this.usersService.findByIds(createPrivateChannelDto.userIds);
+  async create(userId: string, createUserTextChannelDto: CreateUserTextChannelDto): Promise<PrivateChannel> {
+    const users: User[] = await this.usersService.findByIds(createUserTextChannelDto.userIds);
     const userTextChannel: UserTextChannel = this.userTextChannelsRepository.create({
-      ...createPrivateChannelDto,
+      ...createUserTextChannelDto,
       users,
       createdBy: userId,
       lastUpdatedBy: userId,

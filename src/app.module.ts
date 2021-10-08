@@ -34,7 +34,7 @@ const routes: Routes = [
         module: UserChannelsModule,
         children: [
           {
-            path: ':messageFluxId/message',
+            path: ':messageFluxId/messages',
             module: UserMessagesModule,
           },
         ],
@@ -54,7 +54,7 @@ const routes: Routes = [
         module: ServerChannelsModule,
         children: [
           {
-            path: ':messageFluxId/message',
+            path: ':messageFluxId/messages',
             module: ServerMessagesModule,
           },
         ],
@@ -89,9 +89,9 @@ const routes: Routes = [
     ServersModule,
     MessagesModule,
     UserChannelsModule,
+    UserMessagesModule,
     FriendRequestsModule,
     ServerChannelsModule,
-    UserMessagesModule,
     ServerMessagesModule,
   ],
   providers: [
