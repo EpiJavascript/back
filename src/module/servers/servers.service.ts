@@ -28,7 +28,9 @@ export default class ServersService {
   }
 
   findOneOrFail(id: string): Promise<Server> {
-    return this.serversRepository.findOneOrFail(id);
+    return this.serversRepository.findOneOrFail(id, {
+      relations: ['users'],
+    });
   }
 
   findByEmail(email: string): Promise<Server> {

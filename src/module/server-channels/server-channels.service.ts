@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { DeleteResult, Repository, UpdateResult } from 'typeorm';
 
 import ServerTextChannel from './entities/server-text-channel.entity';
 import ServersService from '../servers/servers.service';
@@ -8,6 +8,7 @@ import Server from '../servers/entities/server.entity';
 import UsersService from '../users/users.service';
 import Channel from './entities/server-text-channel.entity';
 import { CreateServerTextChannelDto } from './dto';
+import UpdateServerTextChannelDto from './dto/update-server-text-channel.dto';
 
 const baseFindOptions = {
   relations: ['messageFlux'],
@@ -37,9 +38,24 @@ export default class ServerChannelsService {
     return this.serverTextChannelsRepository.findOneOrFail(id, baseFindOptions);
   }
 
-  async remove(id: string): Promise<void> {
-    await this.serverTextChannelsRepository.delete(id);
+
+  async update(userId: string, serverId: string, id: string, updateServerTextChannelDto: UpdateServerTextChannelDto): Promise<UpdateResult> {
+    const server: Server = await this.serversService.findOneOrFail(serverId);
+    if (!server.userIds.includes(userId)) {
+      throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED);
+    }
+    return this.serverTextChannelsRepository.update(id, updateServerTextChannelDto);
   }
+
+
+  async remove(userId: string, serverId: string, id: string): Promise<DeleteResult> {
+    const server: Server = await this.serversService.findOneOrFail(serverId);
+    if (!server.userIds.includes(userId)) {
+      throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED);
+    }
+    return this.serverTextChannelsRepository.delete(id);
+  }
+
 
   async create(userId: string, serverId: string, createServerTextChannelDto: CreateServerTextChannelDto): Promise<ServerTextChannel> {
     const server: Server = await this.serversService.findOneOrFail(serverId);

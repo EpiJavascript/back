@@ -18,7 +18,7 @@ export default class ServerTextChannel extends Base {
   /**
    * Server relation
    */
-  @ManyToOne(() => Server, server => server.channels, {
+  @ManyToOne(() => Server, server => server.textChannels, {
     onDelete: 'CASCADE',
     nullable: false,
   })

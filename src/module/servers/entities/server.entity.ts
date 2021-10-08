@@ -1,6 +1,6 @@
 import { Column, Entity, JoinColumn, JoinTable, ManyToMany, OneToMany, OneToOne, RelationId } from 'typeorm';
 
-import Channel from '../../server-channels/entities/server-text-channel.entity';
+import ServerTextChannel from 'src/module/server-channels/entities/server-text-channel.entity';
 import Base from '../../../database/common/base.entity';
 import User from '../../users/entities/user.entity';
 
@@ -34,9 +34,9 @@ export default class Server extends Base {
   /**
    * Channels relation
    */
-  @OneToMany(() => Channel, channel => channel.server)
-  channels: Channel[];
+  @OneToMany(() => ServerTextChannel, textChannel => textChannel.server)
+  textChannels: ServerTextChannel[];
 
-  @RelationId((server: Server) => server.channels)
+  @RelationId((server: Server) => server.textChannels)
   channelIds: string[];
 }
