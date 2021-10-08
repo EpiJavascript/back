@@ -1,13 +1,13 @@
 import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 
-import ServerTextChannel from './entities/server-text-channel.entity';
+import { CreateServerTextChannelDto, UpdateServerTextChannelDto } from './dto';
 import JwtPayloadInterface from 'src/common/interfaces/jwt-payload';
 import { Payload } from 'src/common/decorators/payload.decorator';
 import ServerChannelsService from './server-channels.service';
 import AuthGuard from 'src/common/guards/auth.guard';
-import { CreateServerTextChannelDto, UpdateServerTextChannelDto } from './dto';
 import { DeleteResult, UpdateResult } from 'typeorm';
+import { ServerTextChannel } from './entities';
 
 @Controller()
 @ApiTags('serverChannels')

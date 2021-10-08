@@ -2,10 +2,10 @@ import { Controller, Get, HttpCode, HttpStatus, Param, UseGuards } from '@nestjs
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Payload } from 'src/common/decorators/payload.decorator';
 
-import AuthGuard from 'src/common/guards/auth.guard';
 import JwtPayloadInterface from 'src/common/interfaces/jwt-payload';
-import Message from './entities/message.entity';
+import AuthGuard from 'src/common/guards/auth.guard';
 import MessagesService from './messages.service';
+import { Message } from './entities';
 
 @Controller()
 @ApiTags('messages')

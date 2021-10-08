@@ -1,21 +1,19 @@
 import { Body, Controller, Get, HttpCode, HttpStatus, Post, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 
-import ChannelsService from './user-channels.service';
-import MessagesService from '../messages/messages.service';
-import AuthGuard from 'src/common/guards/auth.guard';
 import JwtPayloadInterface from 'src/common/interfaces/jwt-payload';
 import { Payload } from 'src/common/decorators/payload.decorator';
-import UserTextChannel from './entities/user-text-channel.entity';
+import ChannelsService from './user-channels.service';
+import AuthGuard from 'src/common/guards/auth.guard';
 import { CreateUserTextChannelDto } from './dto';
+import { UserTextChannel } from './entities';
 
 @ApiTags()
 @Controller()
 export default class UserChannelsController {
   constructor(
     private readonly userChannelsService: ChannelsService,
-    private readonly userMessagesService: MessagesService) { }
-
+  ) { }
 
   @Get()
   @UseGuards(AuthGuard)
@@ -30,7 +28,6 @@ export default class UserChannelsController {
     return this.userChannelsService.findAll(payload.userId);
   }
 
-
   @Post()
   @UseGuards(AuthGuard)
   @ApiBearerAuth()
@@ -43,5 +40,4 @@ export default class UserChannelsController {
   createChannel(@Payload() payload: JwtPayloadInterface, @Body() createUserTextChannelDto: CreateUserTextChannelDto): Promise<UserTextChannel> {
     return this.userChannelsService.create(payload.userId, createUserTextChannelDto);
   }
-
 }

@@ -1,13 +1,13 @@
 import { Controller, Delete, Get, HttpCode, HttpStatus, Param, Put, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { DeleteResult, UpdateResult } from 'typeorm';
 
 import JwtPayloadInterface from '../../common/interfaces/jwt-payload';
 import { Payload } from '../../common/decorators/payload.decorator';
 import AuthGuard from '../../common/guards/auth.guard';
 import UsersService from './users.service';
-import User from './entities/user.entity';
 import { UpdateUserDto } from './dto';
-import { DeleteResult, UpdateResult } from 'typeorm';
+import { User } from './entities';
 
 @Controller()
 export default class UsersController {

@@ -3,11 +3,11 @@ import { ApiBearerAuth, ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger'
 
 import JwtPayloadInterface from '../../common/interfaces/jwt-payload';
 import { Payload } from '../../common/decorators/payload.decorator';
-import { FriendRequestEnum } from './enums/friend-request.enum';
-import FriendRequest from './entities/friend-request.entity';
-import AuthGuard from '../../common/guards/auth.guard';
-import User from '../users/entities/user.entity';
 import FriendRequestsService from './friend-requests.service';
+import AuthGuard from '../../common/guards/auth.guard';
+import { FriendRequestEnum } from './enums';
+import { FriendRequest } from './entities';
+import { User } from '../users/entities';
 
 @Controller()
 @ApiTags('friend-requests')

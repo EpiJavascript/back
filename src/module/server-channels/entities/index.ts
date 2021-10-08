@@ -1,0 +1,1 @@
+export { default as ServerTextChannel } from './server-text-channel.entity';

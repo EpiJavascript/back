@@ -2,10 +2,10 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Any, Repository } from 'typeorm';
 
-import { FriendRequestEnum } from './enums/friend-request.enum';
-import FriendRequest from './entities/friend-request.entity';
-import User from '../users/entities/user.entity';
 import UsersService from '../users/users.service';
+import { FriendRequestEnum } from './enums';
+import { FriendRequest } from './entities';
+import { User } from '../users/entities';
 
 @Injectable()
 export default class FriendRequestsService {

@@ -7,8 +7,7 @@ import { Payload } from '../../common/decorators/payload.decorator';
 import { CreateServerDto, UpdateServerDto } from './dto';
 import AuthGuard from '../../common/guards/auth.guard';
 import ServersService from './servers.service';
-import server from './entities/server.entity';
-import Server from './entities/server.entity';
+import { Server } from './entities';
 
 @Controller()
 @ApiTags('servers')
@@ -24,7 +23,7 @@ export default class ServersController {
   })
   @HttpCode(HttpStatus.OK)
   @HttpCode(HttpStatus.FORBIDDEN)
-  findAll(@Payload() payload: JwtPayloadInterface): Promise<server[]> {
+  findAll(@Payload() payload: JwtPayloadInterface): Promise<Server[]> {
     return this.serversService.findAll(payload.userId);
   }
 

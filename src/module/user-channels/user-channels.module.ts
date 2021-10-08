@@ -1,11 +1,11 @@
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Module } from '@nestjs/common';
 
-import UserTextChannel from './entities/user-text-channel.entity';
 import UserChannelsController from './user-channels.controller';
 import UserChannelsService from './user-channels.service';
 import MessagesModule from '../messages/messages.module';
 import UsersModule from '../users/users.module';
+import { UserTextChannel } from './entities';
 
 @Module({
   imports: [

@@ -3,11 +3,10 @@ import * as jwt from 'jsonwebtoken';
 import * as crypto from 'crypto';
 
 import JwtPayloadInterface from '../../common/interfaces/jwt-payload';
-import CreateUserDto from '../users/dto/create-user.dto';
-import LoginUserDto from '../users/dto/login-user.dto';
-import User from '../users/entities/user.entity';
+import { CreateUserDto, LoginUserDto } from '../users/dto';
 import UserService from '../users/users.service';
-import AuthDto from './dto/auth.dto';
+import { User } from '../users/entities';
+import { AuthDto } from './dto';
 
 
 function hash(str: string): string {

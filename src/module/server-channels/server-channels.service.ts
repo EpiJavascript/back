@@ -2,17 +2,12 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DeleteResult, Repository, UpdateResult } from 'typeorm';
 
-import ServerTextChannel from './entities/server-text-channel.entity';
+import { CreateServerTextChannelDto, UpdateServerTextChannelDto } from './dto';
 import ServersService from '../servers/servers.service';
-import Server from '../servers/entities/server.entity';
 import UsersService from '../users/users.service';
-import Channel from './entities/server-text-channel.entity';
-import { CreateServerTextChannelDto } from './dto';
-import UpdateServerTextChannelDto from './dto/update-server-text-channel.dto';
+import { ServerTextChannel } from './entities';
+import { Server } from '../servers/entities';
 
-const baseFindOptions = {
-  relations: ['messageFlux'],
-};
 @Injectable()
 export default class ServerChannelsService {
   constructor(
@@ -27,15 +22,15 @@ export default class ServerChannelsService {
     if (!server.userIds.includes(userId)) {
       throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED);
     }
-    return this.serverTextChannelsRepository.find(baseFindOptions);
+    return this.serverTextChannelsRepository.find({ relations: ['messageFlux'] });
   }
 
-  findOne(id: string): Promise<Channel> {
-    return this.serverTextChannelsRepository.findOne(id, baseFindOptions);
+  findOne(id: string): Promise<ServerTextChannel> {
+    return this.serverTextChannelsRepository.findOne(id, { relations: ['messageFlux'] });
   }
 
-  findOneOrFail(id: string): Promise<Channel> {
-    return this.serverTextChannelsRepository.findOneOrFail(id, baseFindOptions);
+  findOneOrFail(id: string): Promise<ServerTextChannel> {
+    return this.serverTextChannelsRepository.findOneOrFail(id, { relations: ['messageFlux'] });
   }
 
 

@@ -1,11 +1,10 @@
-import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { Module } from '@nestjs/common';
 
 import MessagesController from './messages.controller';
 import UserModule from 'src/module/users/users.module';
+import { Message, MessageFlux } from './entities';
 import MessagesService from './messages.service';
-import Message from './entities/message.entity';
-import MessageFlux from './entities/message-flux.entity';
 
 @Module({
   imports: [

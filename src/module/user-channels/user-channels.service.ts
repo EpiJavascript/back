@@ -1,12 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { DeleteResult, In, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { In, Repository } from 'typeorm';
+import { Injectable } from '@nestjs/common';
 
-import { CreateUserTextChannelDto } from './dto';
-import UserTextChannel from './entities/user-text-channel.entity';
-import PrivateChannel from './entities/user-text-channel.entity';
 import UsersService from '../users/users.service';
-import User from '../users/entities/user.entity';
+import { CreateUserTextChannelDto } from './dto';
+import { UserTextChannel } from './entities';
+import { User } from '../users/entities';
 
 @Injectable()
 export default class UserChannelsService {
@@ -16,7 +15,7 @@ export default class UserChannelsService {
     private usersService: UsersService,
   ) { }
   
-  async findAll(userId: string): Promise<PrivateChannel[]> {
+  findAll(userId: string): Promise<UserTextChannel[]> {
     return this.userTextChannelsRepository.find({
       where: {
         users: {
@@ -35,12 +34,11 @@ export default class UserChannelsService {
     return this.userTextChannelsRepository.findOneOrFail(id);
   }
 
-  async remove(id: string): Promise<void> {
-    await this.userTextChannelsRepository.delete(id);
+  remove(id: string): Promise<DeleteResult> {
+    return this.userTextChannelsRepository.delete(id);
   }
 
-
-  async create(userId: string, createUserTextChannelDto: CreateUserTextChannelDto): Promise<PrivateChannel> {
+  async create(userId: string, createUserTextChannelDto: CreateUserTextChannelDto): Promise<UserTextChannel> {
     const users: User[] = await this.usersService.findByIds(createUserTextChannelDto.userIds);
     const userTextChannel: UserTextChannel = this.userTextChannelsRepository.create({
       ...createUserTextChannelDto,

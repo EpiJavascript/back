@@ -1,8 +1,8 @@
 import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 
-import MessageFlux from 'src/module/messages/entities/message-flux.entity';
-import Server from '../../servers/entities/server.entity';
+import { MessageFlux } from 'src/module/messages/entities';
 import Base from '../../../database/common/base.entity';
+import { Server } from 'src/module/servers/entities';
 
 @Entity()
 export default class ServerTextChannel extends Base {

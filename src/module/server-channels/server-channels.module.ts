@@ -1,16 +1,16 @@
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Module } from '@nestjs/common';
 
-import ServerChannel from './entities/server-text-channel.entity';
-import MessagesModule from '../messages/messages.module';
 import ServerChannelsController from './server-channels.controller';
-import ServersModule from '../servers/servers.module';
 import ServerChannelsService from './server-channels.service';
+import MessagesModule from '../messages/messages.module';
+import ServersModule from '../servers/servers.module';
 import UsersModule from '../users/users.module';
+import { ServerTextChannel } from './entities';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([ServerChannel]),
+    TypeOrmModule.forFeature([ServerTextChannel]),
     MessagesModule,
     ServersModule,
     UsersModule,

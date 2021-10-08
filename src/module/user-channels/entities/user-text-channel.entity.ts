@@ -1,8 +1,8 @@
 import { Entity, JoinTable, ManyToMany, ManyToOne, RelationId } from 'typeorm';
 
-import MessageFlux from 'src/module/messages/entities/message-flux.entity';
+import { MessageFlux } from 'src/module/messages/entities';
 import Base from '../../../database/common/base.entity';
-import User from '../../users/entities/user.entity';
+import { User } from 'src/module/users/entities';
 
 @Entity()
 export default class UserTextChannel extends Base {

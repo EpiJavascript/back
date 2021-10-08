@@ -1,8 +1,8 @@
 import { Column, Entity, ManyToOne } from 'typeorm';
 
-import { FriendRequestEnum } from '../enums/friend-request.enum';
 import Base from '../../../database/common/base.entity';
-import User from '../../users/entities/user.entity';
+import { User } from 'src/module/users/entities';
+import { FriendRequestEnum } from '../enums';
 
 @Entity()
 export default class FriendRequest extends Base {

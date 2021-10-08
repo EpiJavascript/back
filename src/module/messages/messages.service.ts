@@ -2,9 +2,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 
-import MessageFlux from './entities/message-flux.entity';
-import CreateMessageDto from './dto/create-message.dto';
-import Message from './entities/message.entity';
+import { Message, MessageFlux } from './entities';
+import { CreateMessageDto } from './dto';
 
 @Injectable()
 export default class MessagesService {
@@ -16,7 +15,7 @@ export default class MessagesService {
   ) { }
 
   async findAll(userId: string, messageFluxId: string): Promise<Message[]> {
-    const messageFlux : MessageFlux = await this.messageFluxesRepository.findOneOrFail(messageFluxId);
+    const messageFlux: MessageFlux = await this.messageFluxesRepository.findOneOrFail(messageFluxId);
     return messageFlux.messages;
   }
 
