@@ -1,12 +1,15 @@
-import { DeleteResult, In, Repository } from 'typeorm';
+import { DeleteResult, In, Repository, UpdateResult } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 
 import UsersService from '../users/users.service';
-import { CreateUserTextChannelDto } from './dto';
+import { CreateUserTextChannelDto, UpdateUserTextChannelDto } from './dto';
 import { UserTextChannel } from './entities';
 import { User } from '../users/entities';
 
+function generateChannelName(users: User[]): string {
+  return users.map((value: User) => {return value.username;}).join(', ');
+}
 @Injectable()
 export default class UserChannelsService {
   constructor(
@@ -34,18 +37,36 @@ export default class UserChannelsService {
     return this.userTextChannelsRepository.findOneOrFail(id);
   }
 
-  remove(id: string): Promise<DeleteResult> {
-    return this.userTextChannelsRepository.delete(id);
-  }
-
   async create(userId: string, createUserTextChannelDto: CreateUserTextChannelDto): Promise<UserTextChannel> {
     const users: User[] = await this.usersService.findByIds(createUserTextChannelDto.userIds);
     const userTextChannel: UserTextChannel = this.userTextChannelsRepository.create({
       ...createUserTextChannelDto,
+      name: generateChannelName(users),
       users,
       createdBy: userId,
       lastUpdatedBy: userId,
     });
     return this.userTextChannelsRepository.save(userTextChannel);
+  }
+
+  async remove(userId: string, id: string): Promise<DeleteResult> {
+    const userTextChannel: UserTextChannel = await this.userTextChannelsRepository.findOneOrFail(id);
+    if (!userTextChannel.userIds.includes(userId)) {
+      throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED);
+    }
+    return this.userTextChannelsRepository.delete(id);
+  }
+
+  async update(userId: string, id: string, updateUserTextChannelDto: UpdateUserTextChannelDto): Promise<UpdateResult> {
+    const users: User[] = await this.usersService.findByIds(updateUserTextChannelDto.userIds);
+    const userTextChannel: UserTextChannel = await this.userTextChannelsRepository.findOneOrFail(id);
+    if (!userTextChannel.userIds.includes(userId)) {
+      throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED);
+    }
+    return this.userTextChannelsRepository.update(id, {
+      ...updateUserTextChannelDto,
+      users,
+      lastUpdatedBy: userId,
+    });
   }
 }

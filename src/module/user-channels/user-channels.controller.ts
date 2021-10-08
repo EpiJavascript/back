@@ -1,11 +1,12 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { DeleteResult, UpdateResult } from 'typeorm';
 
+import { CreateUserTextChannelDto, UpdateUserTextChannelDto } from './dto';
 import JwtPayloadInterface from 'src/common/interfaces/jwt-payload';
 import { Payload } from 'src/common/decorators/payload.decorator';
 import ChannelsService from './user-channels.service';
 import AuthGuard from 'src/common/guards/auth.guard';
-import { CreateUserTextChannelDto } from './dto';
 import { UserTextChannel } from './entities';
 
 @ApiTags()
@@ -37,7 +38,33 @@ export default class UserChannelsController {
   })
   @HttpCode(HttpStatus.CREATED)
   @HttpCode(HttpStatus.UNAUTHORIZED)
-  createChannel(@Payload() payload: JwtPayloadInterface, @Body() createUserTextChannelDto: CreateUserTextChannelDto): Promise<UserTextChannel> {
+  create(@Payload() payload: JwtPayloadInterface, @Body() createUserTextChannelDto: CreateUserTextChannelDto): Promise<UserTextChannel> {
     return this.userChannelsService.create(payload.userId, createUserTextChannelDto);
+  }
+
+  @Put(':id')
+  @UseGuards(AuthGuard)
+  @ApiBearerAuth()
+  @ApiOperation({
+    operationId: 'update',
+    description: 'Update a user channel',
+  })
+  @HttpCode(HttpStatus.OK)
+  @HttpCode(HttpStatus.UNAUTHORIZED)
+  update(@Payload() payload: JwtPayloadInterface, @Param('id') id: string, updateUserTextChannelDto: UpdateUserTextChannelDto): Promise<UpdateResult> {
+    return this.userChannelsService.update(payload.userId, id, updateUserTextChannelDto);
+  }
+
+  @Delete(':id')
+  @UseGuards(AuthGuard)
+  @ApiBearerAuth()
+  @ApiOperation({
+    operationId: 'delete',
+    description: 'Delete a user channel',
+  })
+  @HttpCode(HttpStatus.OK)
+  @HttpCode(HttpStatus.UNAUTHORIZED)
+  delete(@Payload() payload: JwtPayloadInterface, @Param('id') id: string): Promise<DeleteResult> {
+    return this.userChannelsService.remove(payload.userId, id);
   }
 }
