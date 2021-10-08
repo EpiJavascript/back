@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, UpdateResult } from 'typeorm';
+import { DeleteResult, Repository, UpdateResult } from 'typeorm';
 
 import { CreateServerDto, UpdateServerDto } from './dto';
 import UsersService from '../users/users.service';
@@ -35,7 +35,7 @@ export default class ServersService {
     return this.serversRepository.createQueryBuilder().where({ email }).getOne();
   }
 
-  async remove(userId: string, id: string): Promise<void> {
+  async remove(userId: string, id: string): Promise<DeleteResult> {
     const server = await this.serversRepository.findOne({
       where: {
         adminUserId: userId,
@@ -45,7 +45,7 @@ export default class ServersService {
     if (server === undefined) {
       throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED);
     }
-    await this.serversRepository.delete(id);
+    return this.serversRepository.delete(id);
   }
 
   async create(userId: string, createServerDto: CreateServerDto): Promise<Server> {
@@ -71,5 +71,46 @@ export default class ServersService {
       throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED);
     }
     return this.serversRepository.update(id, updateServerDto);
+  }
+
+  async join(userId: string, id: string): Promise<Server> {
+    const server = await this.serversRepository.findOne({
+      where: {
+        id,
+      },
+      relations: ['users'],
+    });
+    if (server === undefined) {
+      throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED);
+    }
+    if (server.userIds.includes(userId)) {
+      throw new HttpException('You are already in this server', HttpStatus.UNAUTHORIZED);
+    }
+    const user: User = await this.usersService.findOneOrFail(userId);
+    server.users.push(user);
+    await this.serversRepository.save(server);
+    return this.findOneOrFail(id);
+  }
+
+  async leave(userId: string, id: string): Promise<void> {
+    const server = await this.serversRepository.findOne({
+      where: {
+        id,
+      },
+      relations: ['users'],
+    });
+    if (server === undefined) {
+      throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED);
+    }
+    if (!server.userIds.includes(userId)) {
+      throw new HttpException('You are not in this server', HttpStatus.UNAUTHORIZED);
+    }
+    const user: User = await this.usersService.findOneOrFail(userId);
+    server.users.filter((value: User) => {
+      if (value != user) {
+        return value;
+      }
+    });
+    await this.serversRepository.save(server);
   }
 }

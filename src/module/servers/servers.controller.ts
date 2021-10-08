@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { UpdateResult } from 'typeorm';
+import { DeleteResult, UpdateResult } from 'typeorm';
 
 import JwtPayloadInterface from '../../common/interfaces/jwt-payload';
 import { Payload } from '../../common/decorators/payload.decorator';
@@ -63,7 +63,33 @@ export default class ServersController {
   })
   @HttpCode(HttpStatus.OK)
   @HttpCode(HttpStatus.FORBIDDEN)
-  remove(@Payload() payload: JwtPayloadInterface, @Param('id') id: string): Promise<void> {
+  remove(@Payload() payload: JwtPayloadInterface, @Param('id') id: string): Promise<DeleteResult> {
     return this.serversService.remove(payload.userId, id);
+  }
+
+  @Put(':id/join')
+  @UseGuards(AuthGuard)
+  @ApiBearerAuth()
+  @ApiOperation({
+    operationId: 'join',
+    description: 'Join a server',
+  })
+  @HttpCode(HttpStatus.OK)
+  @HttpCode(HttpStatus.FORBIDDEN)
+  join(@Payload() payload: JwtPayloadInterface, @Param('id') id: string): Promise<Server> {
+    return this.serversService.join(payload.userId, id);
+  }
+
+  @Delete(':id/leave')
+  @UseGuards(AuthGuard)
+  @ApiBearerAuth()
+  @ApiOperation({
+    operationId: 'leave',
+    description: 'Leave a server',
+  })
+  @HttpCode(HttpStatus.OK)
+  @HttpCode(HttpStatus.FORBIDDEN)
+  leave(@Payload() payload: JwtPayloadInterface, @Param('id') id: string): Promise<void> {
+    return this.serversService.leave(payload.userId, id);
   }
 }
