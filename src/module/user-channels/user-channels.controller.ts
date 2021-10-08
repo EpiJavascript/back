@@ -9,8 +9,7 @@ import MessagesService from '../messages/messages.service';
 export default class UserChannelsController {
   constructor(
     private readonly userChannelsService: ChannelsService,
-    private readonly userMessagesService: MessagesService) {
-  }
+    private readonly userMessagesService: MessagesService) { }
 
   @Get()
   test(): void {

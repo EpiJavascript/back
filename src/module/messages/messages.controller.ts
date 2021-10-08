@@ -1,15 +1,16 @@
 import { Controller, Get, HttpCode, HttpStatus, Param, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { Payload } from 'src/common/decorators/payload.decorator';
 
 import AuthGuard from 'src/common/guards/auth.guard';
+import JwtPayloadInterface from 'src/common/interfaces/jwt-payload';
+import Message from './entities/message.entity';
 import MessagesService from './messages.service';
 
 @Controller()
 @ApiTags('messages')
 export default class MessagesController {
-  constructor(private readonly messagesService: MessagesService) {
-    this.messagesService = messagesService;
-  }
+  constructor(private readonly messagesService: MessagesService) { }
 
   @Get()
   @UseGuards(AuthGuard)
@@ -19,7 +20,7 @@ export default class MessagesController {
   })
   @HttpCode(HttpStatus.OK)
   @HttpCode(HttpStatus.FORBIDDEN)
-  test(@Param(':messageFluxId') messageFluxId: string): void {
-    console.log(messageFluxId);
+  findAll(@Param(':messageFluxId') messageFluxId: string, @Payload() payload: JwtPayloadInterface): Promise<Message[]> {
+    return this.messagesService.findAll(payload.userId, messageFluxId);
   }
 }

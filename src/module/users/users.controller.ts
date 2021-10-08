@@ -9,7 +9,7 @@ import User from './entities/user.entity';
 
 @Controller()
 export default class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(private readonly usersService: UsersService) { }
 
   @Get()
   @UseGuards(AuthGuard)

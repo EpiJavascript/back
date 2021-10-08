@@ -10,9 +10,7 @@ import AuthDto from './dto/auth.dto';
 @Controller()
 @ApiTags('auth')
 export default class AuthController {
-  constructor(private readonly authService: AuthService) {
-    this.authService = authService;
-  }
+  constructor(private readonly authService: AuthService) { }
 
   @Post('login')
   @ApiOperation({

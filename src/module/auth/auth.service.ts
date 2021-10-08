@@ -16,9 +16,7 @@ function hash(str: string): string {
 
 @Injectable()
 export default class AuthService {
-  constructor(private userService: UserService) {
-    this.userService = userService;
-  }
+  constructor(private userService: UserService) { }
 
   async login(loginUserDto: LoginUserDto): Promise<AuthDto> {
     const user: User = await this.userService.findByEmail(loginUserDto.email, true);

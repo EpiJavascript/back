@@ -82,8 +82,8 @@ export default class UsersService {
 
 
   // Friends
-  async findAllFriends(userId: string) : Promise<User[]> {
-    const user : User = await this.usersRepository.findOneOrFail(userId, {
+  async findAllFriends(userId: string): Promise<User[]> {
+    const user: User = await this.usersRepository.findOneOrFail(userId, {
       relations: ['friends'],
     });
     return user.friends;

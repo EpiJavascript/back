@@ -12,8 +12,7 @@ import FriendRequestsService from './friend-requests.service';
 @Controller()
 @ApiTags('friend-requests')
 export default class FriendRequestsController {
-  constructor(private readonly friendRequestsService: FriendRequestsService) {
-  }
+  constructor(private readonly friendRequestsService: FriendRequestsService) { }
 
   @Post(':userId')
   @UseGuards(AuthGuard)

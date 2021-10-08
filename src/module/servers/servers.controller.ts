@@ -12,9 +12,7 @@ import Server from './entities/server.entity';
 @Controller()
 @ApiTags('servers')
 export default class ServersController {
-  constructor(private readonly serversService: ServersService) {
-    this.serversService = serversService;
-  }
+  constructor(private readonly serversService: ServersService) { }
 
   @Get()
   @UseGuards(AuthGuard)

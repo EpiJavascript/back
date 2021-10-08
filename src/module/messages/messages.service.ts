@@ -15,9 +15,9 @@ export default class MessagesService {
     private readonly messageFluxesRepository: Repository<MessageFlux>,
   ) { }
 
-  findAll(userId: string): Promise<Message[]> {
-    console.log(userId);
-    return this.messagesRepository.find();
+  async findAll(userId: string, messageFluxId: string): Promise<Message[]> {
+    const messageFlux : MessageFlux = await this.messageFluxesRepository.findOneOrFail(messageFluxId);
+    return messageFlux.messages;
   }
 
   findOne(id: string): Promise<Message> {
