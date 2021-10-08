@@ -45,14 +45,19 @@ export default class UsersService {
       .getOne();
   }
 
-  remove(id: string): Promise<DeleteResult> {
+  remove(userId: string, id: string): Promise<DeleteResult> {
+    if (userId != id) {
+      throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED);
+    }
     return this.usersRepository.delete(id);
   }
 
-  update(id: string, updateUserDto: UpdateUserDto): Promise<UpdateResult> {
+  update(userId: string, id: string, updateUserDto: UpdateUserDto): Promise<UpdateResult> {
+    if (userId != id) {
+      throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED);
+    }
     return this.usersRepository.update(id, updateUserDto);
   }
-
 
 
   async create(userId: string | null, createUserDto: CreateUserDto): Promise<User> {
@@ -79,7 +84,6 @@ export default class UsersService {
     }
     return newUser;
   }
-
 
   // Friends
   async findAllFriends(userId: string): Promise<User[]> {

@@ -1,4 +1,4 @@
-import { Controller, Delete, Get, HttpCode, HttpStatus, Param, UseGuards } from '@nestjs/common';
+import { Controller, Delete, Get, HttpCode, HttpStatus, Param, Put, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 
 import JwtPayloadInterface from '../../common/interfaces/jwt-payload';
@@ -6,6 +6,8 @@ import { Payload } from '../../common/decorators/payload.decorator';
 import AuthGuard from '../../common/guards/auth.guard';
 import UsersService from './users.service';
 import User from './entities/user.entity';
+import { UpdateUserDto } from './dto';
+import { DeleteResult, UpdateResult } from 'typeorm';
 
 @Controller()
 export default class UsersController {
@@ -40,7 +42,33 @@ export default class UsersController {
     return this.usersService.findOne(payload.userId);
   }
 
-  // update + delete
+  @Put(':id')
+  @UseGuards(AuthGuard)
+  @ApiBearerAuth()
+  @ApiTags('users')
+  @ApiOperation({
+    operationId: 'update',
+    description: 'Update a user',
+  })
+  @HttpCode(HttpStatus.OK)
+  @HttpCode(HttpStatus.FORBIDDEN)
+  update(@Payload() payload: JwtPayloadInterface, @Param('id') id: string, updateUserDto: UpdateUserDto): Promise<UpdateResult> {
+    return this.usersService.update(payload.userId, id, updateUserDto);
+  }
+
+  @Delete(':id')
+  @UseGuards(AuthGuard)
+  @ApiBearerAuth()
+  @ApiTags('users')
+  @ApiOperation({
+    operationId: 'delete',
+    description: 'Delete a user',
+  })
+  @HttpCode(HttpStatus.OK)
+  @HttpCode(HttpStatus.FORBIDDEN)
+  delete(@Payload() payload: JwtPayloadInterface, @Param('id') id: string): Promise<DeleteResult> {
+    return this.usersService.remove(payload.userId, id);
+  }
 
   @Get('friends')
   @UseGuards(AuthGuard)
