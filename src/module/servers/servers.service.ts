@@ -1,10 +1,10 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, UpdateResult } from 'typeorm';
 
+import { CreateServerDto, UpdateServerDto } from './dto';
 import UsersService from '../users/users.service';
 import User from '../users/entities/user.entity';
-import CreateServerDto from './dto/server.create.dto';
 import Server from './entities/server.entity';
 
 @Injectable()
@@ -58,5 +58,18 @@ export default class ServersService {
       users: [user], // new server, only 1 user
     });
     return this.serversRepository.save(server);
+  }
+
+  async update(userId: string, id: string, updateServerDto: UpdateServerDto): Promise<UpdateResult> {
+    const server = await this.serversRepository.findOne({
+      where: {
+        adminUserId: userId,
+        id,
+      },
+    });
+    if (server === undefined) {
+      throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED);
+    }
+    return this.serversRepository.update(id, updateServerDto);
   }
 }
