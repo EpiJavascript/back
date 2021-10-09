@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DeleteResult, Repository, UpdateResult } from 'typeorm';
 
@@ -20,7 +20,7 @@ export default class ServerChannelsService {
   async findAll(serverId: string, userId: string): Promise<ServerTextChannel[]> {
     const server: Server = await this.serversService.findOneOrFail(serverId);
     if (!server.userIds.includes(userId)) {
-      throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED);
+      throw new UnauthorizedException();
     }
     return this.serverTextChannelsRepository.find({ relations: ['messageFlux'] });
   }
@@ -37,7 +37,7 @@ export default class ServerChannelsService {
   async update(userId: string, serverId: string, id: string, updateServerTextChannelDto: UpdateServerTextChannelDto): Promise<UpdateResult> {
     const server: Server = await this.serversService.findOneOrFail(serverId);
     if (!server.userIds.includes(userId)) {
-      throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED);
+      throw new UnauthorizedException();
     }
     return this.serverTextChannelsRepository.update(id, updateServerTextChannelDto);
   }
@@ -46,7 +46,7 @@ export default class ServerChannelsService {
   async remove(userId: string, serverId: string, id: string): Promise<DeleteResult> {
     const server: Server = await this.serversService.findOneOrFail(serverId);
     if (!server.userIds.includes(userId)) {
-      throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED);
+      throw new UnauthorizedException();
     }
     return this.serverTextChannelsRepository.delete(id);
   }
@@ -55,7 +55,7 @@ export default class ServerChannelsService {
   async create(userId: string, serverId: string, createServerTextChannelDto: CreateServerTextChannelDto): Promise<ServerTextChannel> {
     const server: Server = await this.serversService.findOneOrFail(serverId);
     if (!server.userIds.includes(userId)) {
-      throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED);
+      throw new UnauthorizedException();
     }
     const serverTextChannel: ServerTextChannel = this.serverTextChannelsRepository.create({
       ...createServerTextChannelDto,

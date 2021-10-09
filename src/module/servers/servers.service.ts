@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { DeleteResult, Repository, UpdateResult } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 
@@ -45,7 +45,7 @@ export default class ServersService {
       },
     });
     if (server === undefined) {
-      throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED);
+      throw new UnauthorizedException();
     }
     return this.serversRepository.delete(id);
   }
@@ -70,7 +70,7 @@ export default class ServersService {
       },
     });
     if (server === undefined) {
-      throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED);
+      throw new UnauthorizedException();
     }
     return this.serversRepository.update(id, updateServerDto);
   }
@@ -83,10 +83,10 @@ export default class ServersService {
       relations: ['users'],
     });
     if (server === undefined) {
-      throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED);
+      throw new UnauthorizedException();
     }
     if (server.userIds.includes(userId)) {
-      throw new HttpException('You are already in this server', HttpStatus.UNAUTHORIZED);
+      throw new UnauthorizedException(); // already in server
     }
     const user: User = await this.usersService.findOneOrFail(userId);
     server.users.push(user);
@@ -102,10 +102,10 @@ export default class ServersService {
       relations: ['users'],
     });
     if (server === undefined) {
-      throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED);
+      throw new UnauthorizedException();
     }
     if (!server.userIds.includes(userId)) {
-      throw new HttpException('You are not in this server', HttpStatus.UNAUTHORIZED);
+      throw new UnauthorizedException(); // not in server
     }
     const user: User = await this.usersService.findOneOrFail(userId);
     server.users.filter((value: User) => {

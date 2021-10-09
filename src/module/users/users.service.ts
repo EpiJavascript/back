@@ -1,9 +1,10 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { DeleteResult, Repository, UpdateResult } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { CreateUserDto, UpdateUserDto } from './dto';
 import { User } from './entities';
+import HttpCustomStatus from 'src/common/enums/http-custom-status.enum';
 
 @Injectable()
 export default class UsersService {
@@ -46,14 +47,14 @@ export default class UsersService {
 
   remove(userId: string, id: string): Promise<DeleteResult> {
     if (userId != id) {
-      throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED);
+      throw new UnauthorizedException();
     }
     return this.usersRepository.delete(id);
   }
 
   update(userId: string, id: string, updateUserDto: UpdateUserDto): Promise<UpdateResult> {
     if (userId != id) {
-      throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED);
+      throw new UnauthorizedException();
     }
     return this.usersRepository.update(id, updateUserDto);
   }
@@ -68,7 +69,7 @@ export default class UsersService {
     // Check if email is already taken
     const duplicateUser: User = await this.usersRepository.findOne({ email: createUserDto.email });
     if (duplicateUser) {
-      throw new HttpException('email already taken', HttpStatus.CONFLICT);
+      throw new HttpException('email_already_taken', HttpCustomStatus.EMAIL_ALREADY_TAKEN);
     }
 
     // Set createBy and lastUpdatedBy properly
@@ -102,7 +103,7 @@ export default class UsersService {
 
     // checkf if user is friend with other user
     if (!user.friendIds.includes(otherId)) {
-      throw new HttpException('You are not friend with this user', HttpStatus.BAD_REQUEST);
+      throw new HttpException('not_friend_with_user', HttpCustomStatus.NOT_FRIEND_WITH_USER);
     }
 
     user.friends = user.friends.filter((val: User) => {

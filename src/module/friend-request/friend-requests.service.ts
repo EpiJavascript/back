@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Any, Repository } from 'typeorm';
 
@@ -6,6 +6,7 @@ import UsersService from '../users/users.service';
 import { FriendRequestEnum } from './enums';
 import { FriendRequest } from './entities';
 import { User } from '../users/entities';
+import HttpCustomStatus from 'src/common/enums/http-custom-status.enum';
 
 @Injectable()
 export default class FriendRequestsService {
@@ -21,7 +22,7 @@ export default class FriendRequestsService {
     const otherUser: User = await this.usersService.findOneOrFail(otherUserId);
     const user: User = await this.usersService.findOneOrFail(userId);
     if (userId == otherUserId) {
-      throw new HttpException('Cannot self request as friend', HttpStatus.BAD_REQUEST);
+      throw new HttpException('self_friend_request', HttpCustomStatus.CANNOT_SELF_FRIEND_REQUEST);
     }
 
     // Check if a friend request is already pending
@@ -36,7 +37,7 @@ export default class FriendRequestsService {
       },
     });
     if (tmp.length) {
-      throw new HttpException('Friend request already pending', HttpStatus.BAD_REQUEST);
+      throw new HttpException('friend_request_already_pending', HttpCustomStatus.FRIEND_REQUEST_ALREADY_PENDING);
     }
 
     const friendRequest: FriendRequest = this.friendRequestsReposiroty.create({
@@ -80,7 +81,7 @@ export default class FriendRequestsService {
 
     // Check if friendRequest has been resolved and targeted user is the actual user
     if (friendRequest.type != FriendRequestEnum.PENDING || friendRequest.requestedUser.id != userId) {
-      throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED);
+      throw new UnauthorizedException();
     }
 
     // update friend request (might delete it)
@@ -102,7 +103,7 @@ export default class FriendRequestsService {
 
     // Check if friendRequest has been resolved and targeted user is the actual user
     if (friendRequest.type != FriendRequestEnum.PENDING || friendRequest.requestedUser.id != userId) {
-      throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED);
+      throw new UnauthorizedException();
     }
 
     // update friend request (might delete it)

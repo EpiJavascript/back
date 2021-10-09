@@ -1,6 +1,6 @@
 import { DeleteResult, In, Repository, UpdateResult } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 
 import UsersService from '../users/users.service';
 import { CreateUserTextChannelDto, UpdateUserTextChannelDto } from './dto';
@@ -52,7 +52,7 @@ export default class UserChannelsService {
   async remove(userId: string, id: string): Promise<DeleteResult> {
     const userTextChannel: UserTextChannel = await this.userTextChannelsRepository.findOneOrFail(id);
     if (!userTextChannel.userIds.includes(userId)) {
-      throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED);
+      throw new UnauthorizedException();
     }
     return this.userTextChannelsRepository.delete(id);
   }
@@ -61,7 +61,7 @@ export default class UserChannelsService {
     const users: User[] = await this.usersService.findByIds(updateUserTextChannelDto.userIds);
     const userTextChannel: UserTextChannel = await this.userTextChannelsRepository.findOneOrFail(id);
     if (!userTextChannel.userIds.includes(userId)) {
-      throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED);
+      throw new UnauthorizedException();
     }
     return this.userTextChannelsRepository.update(id, {
       ...updateUserTextChannelDto,
