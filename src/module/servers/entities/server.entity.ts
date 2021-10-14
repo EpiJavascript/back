@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, JoinTable, ManyToMany, OneToMany, OneToOne, RelationId } from 'typeorm';
+import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, RelationId } from 'typeorm';
 
 import { ServerTextChannel } from 'src/module/server-channels/entities';
 import Base from '../../../database/common/base.entity';
@@ -12,7 +12,7 @@ export default class Server extends Base {
   /**
    * AdminUser relation
    */
-  @OneToOne(() => User, {
+  @ManyToOne(() => User, {
     onDelete: 'CASCADE',
   })
   @JoinColumn()
