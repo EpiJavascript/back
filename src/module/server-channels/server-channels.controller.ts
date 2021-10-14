@@ -7,10 +7,12 @@ import { Payload } from 'src/common/decorators/payload.decorator';
 import ServerChannelsService from './server-channels.service';
 import AuthGuard from 'src/common/guards/auth.guard';
 import { DeleteResult, UpdateResult } from 'typeorm';
+import { CreateMessageDto } from '../messages/dto';
 import { ServerTextChannel } from './entities';
+import { Message } from '../messages/entities';
 
 @Controller()
-@ApiTags('serverChannels')
+@ApiTags('server-channels')
 export default class UserChannelsController {
   constructor(
     private readonly serverChannelsService: ServerChannelsService,
@@ -68,5 +70,30 @@ export default class UserChannelsController {
   delete(@Param('serverId') serverId: string, @Param('id') id: string, @Payload() payload: JwtPayloadInterface): Promise<DeleteResult> {
     return this.serverChannelsService.remove(payload.userId, serverId, id);
   }
-  // delete + update
+
+  @Get(':id/messages')
+  @UseGuards(AuthGuard)
+  @ApiBearerAuth()
+  @ApiOperation({
+    operationId: 'listMessages',
+    description: 'Find all channel messages',
+  })
+  @HttpCode(HttpStatus.OK)
+  @HttpCode(HttpStatus.UNAUTHORIZED)
+  findMessages(@Param('serverId') serverId: string, @Param('id') id: string, @Payload() payload: JwtPayloadInterface): Promise<Message[]> {
+    return this.serverChannelsService.findMessages(payload.userId, serverId, id);
+  }
+
+  @Post(':id/messages')
+  @UseGuards(AuthGuard)
+  @ApiBearerAuth()
+  @ApiOperation({
+    operationId: 'postMessage',
+    description: 'Create a new message',
+  })
+  @HttpCode(HttpStatus.CREATED)
+  @HttpCode(HttpStatus.UNAUTHORIZED)
+  postMessage(@Param('serverId') serverId: string, @Param('id') id: string, @Payload() payload: JwtPayloadInterface, createMessageDto: CreateMessageDto): Promise<Message> {
+    return this.serverChannelsService.postMessage(payload.userId, serverId, id, createMessageDto);
+  }
 }
