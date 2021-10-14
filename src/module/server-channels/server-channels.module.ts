@@ -6,11 +6,11 @@ import ServerChannelsService from './server-channels.service';
 import ServersModule from '../servers/servers.module';
 import UsersModule from '../users/users.module';
 import { ServerTextChannel } from './entities';
-import { Message } from '../messages/entities';
+import { Message, MessageFlux } from '../messages/entities';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([ServerTextChannel, Message]),
+    TypeOrmModule.forFeature([ServerTextChannel, Message, MessageFlux]),
     ServersModule,
     UsersModule,
   ],

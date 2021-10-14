@@ -6,10 +6,11 @@ import UserChannelsService from './user-channels.service';
 import MessagesModule from '../messages/messages.module';
 import UsersModule from '../users/users.module';
 import { UserTextChannel } from './entities';
+import { Message, MessageFlux } from '../messages/entities';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([UserTextChannel]),
+    TypeOrmModule.forFeature([UserTextChannel, Message, MessageFlux]),
     MessagesModule, // check si utilisé
     UsersModule,
   ],

@@ -12,7 +12,9 @@ export default class ServerTextChannel extends Base {
   /**
    * MessageFlux relation
    */
-  @ManyToOne(() => MessageFlux)
+  @ManyToOne(() => MessageFlux, {
+    nullable: false,
+  })
   messageFlux: MessageFlux;
  
   /**

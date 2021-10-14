@@ -1,31 +1,37 @@
-import { DeleteResult, In, Repository, UpdateResult } from 'typeorm';
-import { InjectRepository } from '@nestjs/typeorm';
+import { DeleteResult, Repository, UpdateResult } from 'typeorm';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
 
-import UsersService from '../users/users.service';
 import { CreateUserTextChannelDto, UpdateUserTextChannelDto } from './dto';
+import { CreateMessageDto } from '../messages/dto';
+import UsersService from '../users/users.service';
+import { Message, MessageFlux } from '../messages/entities';
 import { UserTextChannel } from './entities';
 import { User } from '../users/entities';
 
-function generateChannelName(users: User[]): string {
-  return users.map((value: User) => {return value.username;}).join(', ');
-}
 @Injectable()
 export default class UserChannelsService {
   constructor(
     @InjectRepository(UserTextChannel)
     private userTextChannelsRepository: Repository<UserTextChannel>,
+    @InjectRepository(Message)
+    private messageRepository: Repository<Message>,
+    @InjectRepository(MessageFlux)
+    private messagFluxRepository: Repository<MessageFlux>,
     private usersService: UsersService,
   ) { }
-  
-  findAll(userId: string): Promise<UserTextChannel[]> {
-    return this.userTextChannelsRepository.find({
-      where: {
-        users: {
-          id: In([userId]),
+
+  async findAll(userId: string): Promise<UserTextChannel[]> {
+    const userTextChannel = await this.userTextChannelsRepository.find({
+      join: {
+        alias: 'user_text_channel',
+        innerJoinAndSelect: {
+          users: 'user_text_channel.users',
         },
       },
-      relations: ['users'],
+    });
+    return userTextChannel.filter((value: UserTextChannel) => {
+      return value.userIds.includes(userId);
     });
   }
 
@@ -39,9 +45,14 @@ export default class UserChannelsService {
 
   async create(userId: string, createUserTextChannelDto: CreateUserTextChannelDto): Promise<UserTextChannel> {
     const users: User[] = await this.usersService.findByIds(createUserTextChannelDto.userIds);
+    const partialMessageFlux: MessageFlux = this.messagFluxRepository.create({
+      createdBy: userId,
+      lastUpdatedBy: userId,
+    });
+    const messageFlux: MessageFlux = await this.messagFluxRepository.save(partialMessageFlux);
     const userTextChannel: UserTextChannel = this.userTextChannelsRepository.create({
       ...createUserTextChannelDto,
-      name: generateChannelName(users),
+      messageFlux,
       users,
       createdBy: userId,
       lastUpdatedBy: userId,
@@ -68,5 +79,31 @@ export default class UserChannelsService {
       users,
       lastUpdatedBy: userId,
     });
+  }
+
+  // Messages
+  async findMessages(userId: string, channelId: string): Promise<Message[]> {
+    const user: User = await this.usersService.findOneOrFail(userId);
+    const userTextChannel: UserTextChannel = await this.userTextChannelsRepository.findOneOrFail(channelId, { relations: ['messageFlux', 'messageFlux.messages'] });
+    if (!user.userTextChannelIds.includes(channelId)) {
+      throw new UnauthorizedException();
+    }
+    return userTextChannel.messageFlux.messages;
+  }
+
+  async postMessage(userId: string, channelId: string, createMessageDto: CreateMessageDto): Promise<Message> {
+    const user: User = await this.usersService.findOneOrFail(userId);
+    const userTextChannel: UserTextChannel = await this.userTextChannelsRepository.findOneOrFail(channelId, { relations: ['messageFlux', 'messageFlux.messages'] });
+    if (!user.userTextChannelIds.includes(channelId)) {
+      throw new UnauthorizedException();
+    }
+    const message: Message = this.messageRepository.create({
+      ...createMessageDto,
+      messageFlux: userTextChannel.messageFlux,
+      createdBy: userId,
+      lastUpdatedBy: userId,
+    });
+    // save message
+    return this.messageRepository.save(message);
   }
 }

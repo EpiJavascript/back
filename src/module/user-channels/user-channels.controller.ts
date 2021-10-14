@@ -8,6 +8,8 @@ import { Payload } from 'src/common/decorators/payload.decorator';
 import ChannelsService from './user-channels.service';
 import AuthGuard from 'src/common/guards/auth.guard';
 import { UserTextChannel } from './entities';
+import { CreateMessageDto } from '../messages/dto';
+import { Message } from '../messages/entities';
 
 @ApiTags('user-channels')
 @Controller()
@@ -66,5 +68,31 @@ export default class UserChannelsController {
   @HttpCode(HttpStatus.UNAUTHORIZED)
   delete(@Payload() payload: JwtPayloadInterface, @Param('id') id: string): Promise<DeleteResult> {
     return this.userChannelsService.remove(payload.userId, id);
+  }
+
+  @Get(':id/messages')
+  @UseGuards(AuthGuard)
+  @ApiBearerAuth()
+  @ApiOperation({
+    operationId: 'listMessages',
+    description: 'Find all channel messages',
+  })
+  @HttpCode(HttpStatus.OK)
+  @HttpCode(HttpStatus.UNAUTHORIZED)
+  findMessages(@Param('id') id: string, @Payload() payload: JwtPayloadInterface): Promise<Message[]> {
+    return this.userChannelsService.findMessages(payload.userId, id);
+  }
+
+  @Post(':id/messages')
+  @UseGuards(AuthGuard)
+  @ApiBearerAuth()
+  @ApiOperation({
+    operationId: 'postMessage',
+    description: 'Create a new message',
+  })
+  @HttpCode(HttpStatus.CREATED)
+  @HttpCode(HttpStatus.UNAUTHORIZED)
+  postMessage(@Param('id') id: string, @Payload() payload: JwtPayloadInterface, @Body() createMessageDto: CreateMessageDto): Promise<Message> {
+    return this.userChannelsService.postMessage(payload.userId, id, createMessageDto);
   }
 }

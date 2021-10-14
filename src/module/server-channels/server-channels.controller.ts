@@ -49,8 +49,8 @@ export default class UserChannelsController {
   @UseGuards(AuthGuard)
   @ApiBearerAuth()
   @ApiOperation({
-    operationId: 'create',
-    description: 'Create a server channel',
+    operationId: 'update',
+    description: 'Update a server channel',
   })
   @HttpCode(HttpStatus.OK)
   @HttpCode(HttpStatus.UNAUTHORIZED)
@@ -93,7 +93,7 @@ export default class UserChannelsController {
   })
   @HttpCode(HttpStatus.CREATED)
   @HttpCode(HttpStatus.UNAUTHORIZED)
-  postMessage(@Param('serverId') serverId: string, @Param('id') id: string, @Payload() payload: JwtPayloadInterface, createMessageDto: CreateMessageDto): Promise<Message> {
+  postMessage(@Param('serverId') serverId: string, @Param('id') id: string, @Payload() payload: JwtPayloadInterface, @Body() createMessageDto: CreateMessageDto): Promise<Message> {
     return this.serverChannelsService.postMessage(payload.userId, serverId, id, createMessageDto);
   }
 }

@@ -6,13 +6,17 @@ import { User } from 'src/module/users/entities';
 
 @Entity()
 export default class UserTextChannel extends Base {
-  @Column()
+  @Column({
+    nullable: true,
+  })
   name: string;
 
   /**
    * MessageFlux relation
    */
-  @ManyToOne(() => MessageFlux)
+  @ManyToOne(() => MessageFlux, {
+    nullable: false,
+  })
   messageFlux: MessageFlux;
 
   /**

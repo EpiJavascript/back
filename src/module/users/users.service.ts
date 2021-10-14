@@ -15,14 +15,12 @@ export default class UsersService {
 
   // Users
   findAll(): Promise<User[]> {
-    return this.usersRepository.find({
-      relations: ['friends', 'servers'],
-    });
+    return this.usersRepository.find();
   }
 
   findOne(id: string): Promise<User> {
     return this.usersRepository.findOne(id, {
-      relations: ['friends', 'servers'],
+      relations: ['friends', 'servers', 'userTextChannels'],
     });
   }
 
