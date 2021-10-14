@@ -9,7 +9,7 @@ import ChannelsService from './user-channels.service';
 import AuthGuard from 'src/common/guards/auth.guard';
 import { UserTextChannel } from './entities';
 
-@ApiTags()
+@ApiTags('user-channels')
 @Controller()
 export default class UserChannelsController {
   constructor(
