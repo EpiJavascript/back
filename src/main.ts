@@ -23,8 +23,10 @@ function initSwagger(app: INestApplication) {
 async function bootstrap(): Promise<void> {
   const app = await NestFactory.create(AppModule);
   app.useGlobalPipes(new ValidationPipe());
+  app.enableCors({
+    origin: '*',
+  });
   app.setGlobalPrefix('api');
-  app.enableCors();
   initSwagger(app);
   await app.listen(process.env.PORT ? process.env.PORT : 3001);
 }
