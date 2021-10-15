@@ -3,9 +3,14 @@ import { Column, Entity, JoinTable, ManyToMany, ManyToOne, RelationId } from 'ty
 import { MessageFlux } from 'src/module/messages/entities';
 import Base from '../../../database/common/base.entity';
 import { User } from 'src/module/users/entities';
+import { classToPlain, Exclude } from 'class-transformer';
 
 @Entity()
 export default class UserTextChannel extends Base {
+  toJSON(): Record<string, unknown> {
+    return classToPlain(this);
+  }
+
   @Column({
     nullable: true,
   })
@@ -26,6 +31,7 @@ export default class UserTextChannel extends Base {
   @JoinTable()
   users: User[];
 
+  @Exclude()
   @RelationId((userTextChannel: UserTextChannel) => userTextChannel.users)
   userIds: string[];
 }

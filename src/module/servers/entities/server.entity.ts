@@ -1,11 +1,16 @@
 import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, RelationId } from 'typeorm';
 
 import { ServerTextChannel } from 'src/module/server-channels/entities';
+import { classToPlain, Exclude } from 'class-transformer';
 import Base from '../../../database/common/base.entity';
 import { User } from 'src/module/users/entities';
 
 @Entity()
 export default class Server extends Base {
+  toJSON(): Record<string, unknown> {
+    return classToPlain(this);
+  }
+
   @Column()
   name: string;
 
@@ -18,6 +23,7 @@ export default class Server extends Base {
   @JoinColumn()
   adminUser: User;
 
+  @Exclude()
   @Column()
   adminUserId: string;
 
@@ -28,6 +34,7 @@ export default class Server extends Base {
   @JoinTable()
   users: User[];
 
+  @Exclude()
   @RelationId((server: Server) => server.users)
   userIds: string[];
 
@@ -37,6 +44,7 @@ export default class Server extends Base {
   @OneToMany(() => ServerTextChannel, textChannel => textChannel.server)
   textChannels: ServerTextChannel[];
 
+  @Exclude()
   @RelationId((server: Server) => server.textChannels)
   channelIds: string[];
 }
