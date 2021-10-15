@@ -8,6 +8,8 @@ import UsersService from '../users/users.service';
 import { Message, MessageFlux } from '../messages/entities';
 import { UserTextChannel } from './entities';
 import { User } from '../users/entities';
+import { EventsGateway } from 'src/websocket/events/events.gateway';
+import { Socket } from 'socket.io';
 
 @Injectable()
 export default class UserChannelsService {
@@ -19,6 +21,7 @@ export default class UserChannelsService {
     @InjectRepository(MessageFlux)
     private messagFluxRepository: Repository<MessageFlux>,
     private usersService: UsersService,
+    private eventsGateway: EventsGateway,
   ) { }
 
   async findAll(userId: string): Promise<UserTextChannel[]> {
@@ -93,7 +96,7 @@ export default class UserChannelsService {
 
   async postMessage(userId: string, channelId: string, createMessageDto: CreateMessageDto): Promise<Message> {
     const user: User = await this.usersService.findOneOrFail(userId);
-    const userTextChannel: UserTextChannel = await this.userTextChannelsRepository.findOneOrFail(channelId, { relations: ['messageFlux', 'messageFlux.messages'] });
+    const userTextChannel: UserTextChannel = await this.userTextChannelsRepository.findOneOrFail(channelId, { relations: ['users', 'messageFlux', 'messageFlux.messages'] });
     if (!user.userTextChannelIds.includes(channelId)) {
       throw new UnauthorizedException();
     }
@@ -103,6 +106,18 @@ export default class UserChannelsService {
       createdBy: userId,
       lastUpdatedBy: userId,
     });
+    // send notification
+    const connected: Map<string, Socket> = this.eventsGateway.getConnected();
+    userTextChannel.users.forEach((value: User) => {
+      const socket: Socket = connected.get(value.id);
+      // skip if user is not connected or if user is the function caller
+      if (socket === undefined || value.id === userId) {
+        return;
+      }
+      console.log('gonna send message to', value.username);
+      this.eventsGateway.send(socket, 'channel-message', { id: userTextChannel.id, message: createMessageDto.message });
+    });
+
     // save message
     return this.messageRepository.save(message);
   }
