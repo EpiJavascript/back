@@ -9,7 +9,7 @@ function initSwagger(app: INestApplication) {
     .setDescription('EpiJavascript API description')
     .setVersion('1.0')
     .addBearerAuth({
-      summary: 'Standard Authorization header using the Bearer scheme. Example: "bearer {token}"',
+      description: 'Standard Authorization header using the Bearer scheme. Example: "bearer {token}"',
       in: 'header',
       name: 'Authorization',
       type: 'apiKey',
