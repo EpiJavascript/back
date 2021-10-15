@@ -30,7 +30,7 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
   private connected: Map<string, Socket> = new Map<string, Socket>();
 
   @UseGuards(WsGuard)
-  handleConnection(@ConnectedSocket() socket: Socket) {
+  handleConnection(@ConnectedSocket() socket: Socket): void {
     const jwtPayload: JwtPayloadInterface = getJwtPayloadFromSocket(socket);
     this.connected.delete(jwtPayload.userId);
     this.connected.set(jwtPayload.userId, socket);
@@ -46,7 +46,7 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
     return this.connected;
   }
 
-  public send(socket: Socket, message: string, payload: unknown) {
+  public send(socket: Socket, message: string, payload: unknown): void {
     socket.emit(message, payload);
   }
 }
