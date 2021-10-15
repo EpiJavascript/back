@@ -19,7 +19,7 @@ export default class ServersController {
   @ApiBearerAuth()
   @ApiOperation({
     operationId: 'findAll',
-    description: 'Find all your server',
+    summary: 'Find all your server',
   })
   @HttpCode(HttpStatus.OK)
   @HttpCode(HttpStatus.FORBIDDEN)
@@ -32,7 +32,7 @@ export default class ServersController {
   @ApiBearerAuth()
   @ApiOperation({
     operationId: 'create',
-    description: 'Create a new server',
+    summary: 'Create a new server',
   })
   @HttpCode(HttpStatus.CREATED)
   @HttpCode(HttpStatus.FORBIDDEN)
@@ -45,7 +45,7 @@ export default class ServersController {
   @ApiBearerAuth()
   @ApiOperation({
     operationId: 'update',
-    description: 'Update a server (must be server\'s admin)',
+    summary: 'Update a server (must be server\'s admin)',
   })
   @HttpCode(HttpStatus.OK)
   @HttpCode(HttpStatus.FORBIDDEN)
@@ -58,7 +58,7 @@ export default class ServersController {
   @ApiBearerAuth()
   @ApiOperation({
     operationId: 'delete',
-    description: 'Delete a server (must be server\'s admin)',
+    summary: 'Delete a server (must be server\'s admin)',
   })
   @HttpCode(HttpStatus.OK)
   @HttpCode(HttpStatus.FORBIDDEN)
@@ -71,7 +71,7 @@ export default class ServersController {
   @ApiBearerAuth()
   @ApiOperation({
     operationId: 'join',
-    description: 'Join a server',
+    summary: 'Join a server',
   })
   @HttpCode(HttpStatus.OK)
   @HttpCode(HttpStatus.FORBIDDEN)
@@ -84,7 +84,7 @@ export default class ServersController {
   @ApiBearerAuth()
   @ApiOperation({
     operationId: 'leave',
-    description: 'Leave a server',
+    summary: 'Leave a server',
   })
   @HttpCode(HttpStatus.OK)
   @HttpCode(HttpStatus.FORBIDDEN)

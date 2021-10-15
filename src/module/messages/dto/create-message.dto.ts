@@ -5,7 +5,7 @@ export default class CreateMessageDto {
   @IsNotEmpty()
   @IsString()
   @ApiProperty({
-    description: 'Message',
+    summary: 'Message',
     example: 'This is a message',
   })
   message: string;

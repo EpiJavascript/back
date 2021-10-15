@@ -9,7 +9,7 @@ export default class AuthDto {
   @IsNotEmpty()
   @IsString()
   @ApiProperty({
-    description: 'Bearer token',
+    summary: 'Bearer token',
     example: 'eyJhbGciOiJ...',
   })
   token: string;
@@ -17,7 +17,7 @@ export default class AuthDto {
   @IsNotEmpty()
   @IsString()
   @ApiProperty({
-    description: 'User email',
+    summary: 'User email',
     example: 'magnume@gmail.com',
   })
   email: string;
@@ -25,7 +25,7 @@ export default class AuthDto {
   @IsNotEmpty()
   @IsString()
   @ApiProperty({
-    description: 'User username',
+    summary: 'User username',
     example: 'MageNume',
   })
   username: string;

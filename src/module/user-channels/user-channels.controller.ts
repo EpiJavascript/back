@@ -23,7 +23,7 @@ export default class UserChannelsController {
   @ApiBearerAuth()
   @ApiOperation({
     operationId: 'findAll',
-    description: 'Find all user channels',
+    summary: 'Find all user channels',
   })
   @HttpCode(HttpStatus.OK)
   @HttpCode(HttpStatus.UNAUTHORIZED)
@@ -36,7 +36,7 @@ export default class UserChannelsController {
   @ApiBearerAuth()
   @ApiOperation({
     operationId: 'create',
-    description: 'Create a user channel',
+    summary: 'Create a user channel',
   })
   @HttpCode(HttpStatus.CREATED)
   @HttpCode(HttpStatus.UNAUTHORIZED)
@@ -49,7 +49,7 @@ export default class UserChannelsController {
   @ApiBearerAuth()
   @ApiOperation({
     operationId: 'update',
-    description: 'Update a user channel',
+    summary: 'Update a user channel',
   })
   @HttpCode(HttpStatus.OK)
   @HttpCode(HttpStatus.UNAUTHORIZED)
@@ -62,7 +62,7 @@ export default class UserChannelsController {
   @ApiBearerAuth()
   @ApiOperation({
     operationId: 'delete',
-    description: 'Delete a user channel',
+    summary: 'Delete a user channel',
   })
   @HttpCode(HttpStatus.OK)
   @HttpCode(HttpStatus.UNAUTHORIZED)
@@ -75,7 +75,7 @@ export default class UserChannelsController {
   @ApiBearerAuth()
   @ApiOperation({
     operationId: 'listMessages',
-    description: 'Find all channel messages',
+    summary: 'Find all channel messages',
   })
   @HttpCode(HttpStatus.OK)
   @HttpCode(HttpStatus.UNAUTHORIZED)
@@ -88,7 +88,7 @@ export default class UserChannelsController {
   @ApiBearerAuth()
   @ApiOperation({
     operationId: 'postMessage',
-    description: 'Create a new message',
+    summary: 'Create a new message',
   })
   @HttpCode(HttpStatus.CREATED)
   @HttpCode(HttpStatus.UNAUTHORIZED)

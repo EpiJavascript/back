@@ -19,7 +19,7 @@ export default class UsersController {
   @ApiTags('users')
   @ApiOperation({
     operationId: 'findAll',
-    description: 'Find all the users',
+    summary: 'Find all the users',
   })
   @HttpCode(HttpStatus.OK)
   @HttpCode(HttpStatus.FORBIDDEN)
@@ -34,7 +34,7 @@ export default class UsersController {
   @ApiTags('users')
   @ApiOperation({
     operationId: 'findSelf',
-    description: 'Find all the users',
+    summary: 'Find all the users',
   })
   @HttpCode(HttpStatus.OK)
   @HttpCode(HttpStatus.FORBIDDEN)
@@ -48,7 +48,7 @@ export default class UsersController {
   @ApiTags('users')
   @ApiOperation({
     operationId: 'update',
-    description: 'Update a user',
+    summary: 'Update a user',
   })
   @HttpCode(HttpStatus.OK)
   @HttpCode(HttpStatus.FORBIDDEN)
@@ -62,7 +62,7 @@ export default class UsersController {
   @ApiTags('users')
   @ApiOperation({
     operationId: 'delete',
-    description: 'Delete a user',
+    summary: 'Delete a user',
   })
   @HttpCode(HttpStatus.OK)
   @HttpCode(HttpStatus.FORBIDDEN)
@@ -76,7 +76,7 @@ export default class UsersController {
   @ApiTags('friends')
   @ApiOperation({
     operationId: 'findAllFriends',
-    description: 'Find all friends',
+    summary: 'Find all friends',
   })
   @HttpCode(HttpStatus.OK)
   @HttpCode(HttpStatus.FORBIDDEN)
@@ -90,7 +90,7 @@ export default class UsersController {
   @ApiTags('friends')
   @ApiOperation({
     operationId: 'removeFriend',
-    description: 'Remove a friend',
+    summary: 'Remove a friend',
   })
   @HttpCode(HttpStatus.OK)
   @HttpCode(HttpStatus.FORBIDDEN)

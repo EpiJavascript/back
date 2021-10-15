@@ -5,7 +5,7 @@ export default class CreateServerTextChannelDto {
   @IsNotEmpty()
   @IsString()
   @ApiProperty({
-    description: 'Channel name',
+    summary: 'Channel name',
     example: 'General',
   })
   name: string;

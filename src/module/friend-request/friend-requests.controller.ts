@@ -19,7 +19,7 @@ export default class FriendRequestsController {
   @ApiBearerAuth()
   @ApiOperation({
     operationId: 'create',
-    description: 'Create a friend request',
+    summary: 'Create a friend request',
   })
   @HttpCode(HttpStatus.CREATED)
   @HttpCode(HttpStatus.FORBIDDEN)
@@ -32,7 +32,7 @@ export default class FriendRequestsController {
   @ApiBearerAuth()
   @ApiOperation({
     operationId: 'findAllReceived',
-    description: 'Find all received friend requests',
+    summary: 'Find all received friend requests',
   })
   @ApiQuery({
     isArray: true,
@@ -62,7 +62,7 @@ export default class FriendRequestsController {
   @ApiTags('friend-requests')
   @ApiOperation({
     operationId: 'findAllCreated',
-    description: 'Find all created friend requests',
+    summary: 'Find all created friend requests',
   })
   @ApiQuery({
     isArray: true,
@@ -91,7 +91,7 @@ export default class FriendRequestsController {
   @ApiBearerAuth()
   @ApiOperation({
     operationId: 'accept',
-    description: 'Accept a friend request',
+    summary: 'Accept a friend request',
   })
   @HttpCode(HttpStatus.OK)
   @HttpCode(HttpStatus.FORBIDDEN)
@@ -105,7 +105,7 @@ export default class FriendRequestsController {
   @ApiBearerAuth()
   @ApiOperation({
     operationId: 'refuse',
-    description: 'Refuse a friend request',
+    summary: 'Refuse a friend request',
   })
   @HttpCode(HttpStatus.OK)
   @HttpCode(HttpStatus.FORBIDDEN)

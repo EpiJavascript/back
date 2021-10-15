@@ -5,7 +5,7 @@ export default class CreateServerDto {
   @IsNotEmpty()
   @IsString()
   @ApiProperty({
-    description: 'Server name',
+    summary: 'Server name',
     example: 'JSFullstack Server',
   })
   name: string;
