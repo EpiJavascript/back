@@ -1,14 +1,18 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { DeleteResult, Repository, UpdateResult } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Socket } from 'socket.io';
 
 import { CreateServerTextChannelDto, UpdateServerTextChannelDto } from './dto';
+import { EventsGateway } from '../../websocket/events.gateway';
+import { Message, MessageFlux } from '../messages/entities';
 import ServersService from '../servers/servers.service';
+import WsEmitMessage from '../../common/enums/ws.enum';
+import { CreateMessageDto } from '../messages/dto';
 import UsersService from '../users/users.service';
 import { ServerTextChannel } from './entities';
-import { Message, MessageFlux } from '../messages/entities';
 import { Server } from '../servers/entities';
-import { CreateMessageDto } from '../messages/dto';
+import { User } from '../users/entities';
 
 @Injectable()
 export default class ServerChannelsService {
@@ -21,6 +25,7 @@ export default class ServerChannelsService {
     private messagFluxRepository: Repository<MessageFlux>,
     private serversService: ServersService,
     private usersService: UsersService,
+    private eventsGateway: EventsGateway,
   ) { }
 
   async findAll(serverId: string, userId: string): Promise<ServerTextChannel[]> {
@@ -106,6 +111,18 @@ export default class ServerChannelsService {
       createdBy: userId,
       lastUpdatedBy: userId,
     });
+
+    // send notification
+    const connected: Map<string, Socket> = this.eventsGateway.getConnected();
+    server.users.forEach((value: User) => {
+      const socket: Socket = connected.get(value.id);
+      // skip if user is not connected or if user is the function caller
+      if (socket === undefined || value.id === userId) {
+        return;
+      }
+      this.eventsGateway.send(socket, WsEmitMessage.SERVER_CHANNEL_MESSAGE, { id: serverTextChannel.id, message });
+    });
+
     return this.messageRepository.save(message);
   }
 }

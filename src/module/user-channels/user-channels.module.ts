@@ -2,9 +2,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Module } from '@nestjs/common';
 
 import UserChannelsController from './user-channels.controller';
-import EventsModule from 'src/websocket/events/events.module';
 import { Message, MessageFlux } from '../messages/entities';
 import UserChannelsService from './user-channels.service';
+import EventsModule from '../../websocket/events.module';
 import UsersModule from '../users/users.module';
 import { UserTextChannel } from './entities';
 

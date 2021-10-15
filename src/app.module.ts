@@ -11,9 +11,9 @@ import * as fs from 'fs';
 import ServerChannelsModule from './module/server-channels/server-channels.module';
 import FriendRequestsModule from './module/friend-request/friend-requests.module';
 import UserChannelsModule from './module/user-channels/user-channels.module';
-import EventsModule from './websocket/events/events.module';
 import ServersModule from './module/servers/servers.module';
 import UsersModule from './module/users/users.module';
+import EventsModule from './websocket/events.module';
 import AuthModule from './module/auth/auth.module';
 
 

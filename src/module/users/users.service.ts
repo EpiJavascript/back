@@ -1,16 +1,20 @@
 import { HttpException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { DeleteResult, Repository, UpdateResult } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Socket } from 'socket.io';
 
+import HttpCustomStatus from '../../common/enums/http-custom-status.enum';
+import { EventsGateway } from '../../websocket/events.gateway';
+import WsEmitMessage from '../../common/enums/ws.enum';
 import { CreateUserDto, UpdateUserDto } from './dto';
 import { User } from './entities';
-import HttpCustomStatus from 'src/common/enums/http-custom-status.enum';
 
 @Injectable()
 export default class UsersService {
   constructor(
     @InjectRepository(User)
     private readonly usersRepository: Repository<User>,
+    private eventsGateway: EventsGateway,
   ) { }
 
   // Users
@@ -99,7 +103,7 @@ export default class UsersService {
       relations: ['friends'],
     });
 
-    // checkf if user is friend with other user
+    // check if user is friend with other user
     if (!user.friendIds.includes(otherId)) {
       throw new HttpException('not_friend_with_user', HttpCustomStatus.NOT_FRIEND_WITH_USER);
     }
@@ -110,6 +114,13 @@ export default class UsersService {
     otherUser.friends = otherUser.friends.filter((val: User) => {
       return val.id != userId;
     });
+
+    // send notification
+    const connected: Map<string, Socket> = this.eventsGateway.getConnected();
+    const socket: Socket = connected.get(otherUser.id);
+    if (socket !== undefined) {
+      this.eventsGateway.send(socket, WsEmitMessage.FRIEND_LIST_UPDATED, {});
+    }
 
     await this.usersRepository.save(otherUser);
     await this.usersRepository.save(user);

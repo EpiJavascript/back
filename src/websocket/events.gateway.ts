@@ -9,8 +9,8 @@ import {
   WebSocketServer,
 } from '@nestjs/websockets';
 
-import JwtPayloadInterface from 'src/common/interfaces/jwt-payload';
-import { WsGuard } from '../guards/ws.guard';
+import JwtPayloadInterface from '../common/interfaces/jwt-payload';
+import { WsGuard } from '../common/guards/ws.guard';
 
 function getJwtPayloadFromSocket(socket: Socket) {
   const authorization: string = socket.handshake.headers.authorization;

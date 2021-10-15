@@ -1,15 +1,16 @@
 import { DeleteResult, Repository, UpdateResult } from 'typeorm';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Socket } from 'socket.io';
 
 import { CreateUserTextChannelDto, UpdateUserTextChannelDto } from './dto';
+import { EventsGateway } from '../../websocket/events.gateway';
+import { Message, MessageFlux } from '../messages/entities';
+import WsEmitMessage from '../../common/enums/ws.enum';
 import { CreateMessageDto } from '../messages/dto';
 import UsersService from '../users/users.service';
-import { Message, MessageFlux } from '../messages/entities';
 import { UserTextChannel } from './entities';
 import { User } from '../users/entities';
-import { EventsGateway } from 'src/websocket/events/events.gateway';
-import { Socket } from 'socket.io';
 
 @Injectable()
 export default class UserChannelsService {
@@ -106,6 +107,7 @@ export default class UserChannelsService {
       createdBy: userId,
       lastUpdatedBy: userId,
     });
+
     // send notification
     const connected: Map<string, Socket> = this.eventsGateway.getConnected();
     userTextChannel.users.forEach((value: User) => {
@@ -114,8 +116,7 @@ export default class UserChannelsService {
       if (socket === undefined || value.id === userId) {
         return;
       }
-      console.log('gonna send message to', value.username);
-      this.eventsGateway.send(socket, 'channel-message', { id: userTextChannel.id, message: createMessageDto.message });
+      this.eventsGateway.send(socket, WsEmitMessage.USER_CHANNEL_MESSAGE, { id: userTextChannel.id, message });
     });
 
     // save message

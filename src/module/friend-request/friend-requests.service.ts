@@ -1,12 +1,15 @@
 import { HttpException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Any, Repository } from 'typeorm';
+import { Socket } from 'socket.io';
 
+import HttpCustomStatus from '../../common/enums/http-custom-status.enum';
+import { EventsGateway } from '../../websocket/events.gateway';
+import WsEmitMessage from '../../common/enums/ws.enum';
 import UsersService from '../users/users.service';
 import { FriendRequestEnum } from './enums';
 import { FriendRequest } from './entities';
 import { User } from '../users/entities';
-import HttpCustomStatus from 'src/common/enums/http-custom-status.enum';
 
 @Injectable()
 export default class FriendRequestsService {
@@ -14,6 +17,7 @@ export default class FriendRequestsService {
     @InjectRepository(FriendRequest)
     private readonly friendRequestsReposiroty: Repository<FriendRequest>,
     private readonly usersService: UsersService,
+    private eventsGateway: EventsGateway,
   ) { }
 
   // Friend requests
@@ -46,6 +50,14 @@ export default class FriendRequestsService {
       createdBy: userId,
       lastUpdatedBy: userId,
     });
+
+    // Send notification
+    const connected: Map<string, Socket> = this.eventsGateway.getConnected();
+    const socket: Socket = connected.get(otherUser.id);
+    if (socket !== undefined) {
+      this.eventsGateway.send(socket, WsEmitMessage.FRIEND_REQUEST, { user });
+    }
+
     return this.friendRequestsReposiroty.save(friendRequest);
   }
 
@@ -93,6 +105,14 @@ export default class FriendRequestsService {
     otherUser.friends.push(actualUser);
     await this.usersService.update(otherUser.id, otherUser.id, otherUser);
     await this.usersService.update(actualUser.id, actualUser.id, actualUser);
+
+    // send notification
+    const connected: Map<string, Socket> = this.eventsGateway.getConnected();
+    const socket: Socket = connected.get(otherUser.id);
+    if (socket !== undefined) {
+      this.eventsGateway.send(socket, WsEmitMessage.FRIEND_LIST_UPDATED, {});
+    }
+
     return this.usersService.findOneOrFail(userId);
   }
 
