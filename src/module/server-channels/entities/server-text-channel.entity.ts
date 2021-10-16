@@ -1,9 +1,9 @@
 import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
-
-import { MessageFlux } from 'src/module/messages/entities';
 import { classToPlain, Exclude } from 'class-transformer';
+
 import Base from '../../../database/common/base.entity';
-import { Server } from 'src/module/servers/entities';
+import { MessageFlux } from '../../messages/entities';
+import { Server } from '../../servers/entities';
 
 @Entity()
 export default class ServerTextChannel extends Base {

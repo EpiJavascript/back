@@ -1,9 +1,9 @@
 import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, RelationId } from 'typeorm';
-
-import { ServerTextChannel } from 'src/module/server-channels/entities';
 import { classToPlain, Exclude } from 'class-transformer';
+
+import { ServerTextChannel } from '../../server-channels/entities';
 import Base from '../../../database/common/base.entity';
-import { User } from 'src/module/users/entities';
+import { User } from '../../users/entities';
 
 @Entity()
 export default class Server extends Base {
