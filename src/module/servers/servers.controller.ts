@@ -70,7 +70,7 @@ export default class ServersController {
     return this.serversService.remove(payload.userId, id);
   }
 
-  @Put(':id/join')
+  @Post(':id/join')
   @UseGuards(AuthGuard)
   @ApiBearerAuth()
   @ApiOperation({

@@ -86,7 +86,7 @@ export default class FriendRequestsController {
     return this.friendRequestsService.findAllCreated(payload.userId, types);
   }
 
-  @Get(':friendRequestId')
+  @Post(':friendRequestId')
   @UseGuards(AuthGuard)
   @ApiBearerAuth()
   @ApiOperation({
