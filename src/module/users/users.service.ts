@@ -7,8 +7,8 @@ import HttpCustomStatus from '../../common/enums/http-custom-status.enum';
 import { EventsGateway } from '../../websocket/events.gateway';
 import WsEmitMessage from '../../common/enums/ws.enum';
 import { CreateUserDto, UpdateUserDto } from './dto';
-import { User } from './entities';
 import ImgurService from '../imgur/imgur.service';
+import { User } from './entities';
 
 @Injectable()
 export default class UsersService {

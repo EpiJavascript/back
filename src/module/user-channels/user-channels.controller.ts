@@ -7,9 +7,9 @@ import JwtPayloadInterface from 'src/common/interfaces/jwt-payload';
 import { Payload } from 'src/common/decorators/payload.decorator';
 import ChannelsService from './user-channels.service';
 import AuthGuard from 'src/common/guards/auth.guard';
-import { UserTextChannel } from './entities';
 import { CreateMessageDto } from '../messages/dto';
 import { Message } from '../messages/entities';
+import { UserTextChannel } from './entities';
 
 @ApiTags('user-channels')
 @Controller()
