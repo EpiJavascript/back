@@ -1,0 +1,1 @@
+export { default as UserTextChannel } from './user-text-channel.entity';

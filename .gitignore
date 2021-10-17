@@ -1,3 +1,6 @@
+# custom
+.env.development.local
+
 # compiled output
 /dist
 /node_modules
