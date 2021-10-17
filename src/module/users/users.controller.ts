@@ -1,4 +1,4 @@
-import { Controller, Delete, Get, HttpCode, HttpStatus, Param, Put, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Put, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { DeleteResult, UpdateResult } from 'typeorm';
 
@@ -50,9 +50,12 @@ export default class UsersController {
     operationId: 'update',
     summary: 'Update a user',
   })
+  // @ApiConsumes('multipart/form-data')
+  // @UseInterceptors(FileInterceptor('image'))
   @HttpCode(HttpStatus.OK)
   @HttpCode(HttpStatus.FORBIDDEN)
-  update(@Payload() payload: JwtPayloadInterface, @Param('id') id: string, updateUserDto: UpdateUserDto): Promise<UpdateResult> {
+  update(@Payload() payload: JwtPayloadInterface, @Param('id') id: string, @Body() updateUserDto: UpdateUserDto): Promise<UpdateResult> {
+    // console.log(image);
     return this.usersService.update(payload.userId, id, updateUserDto);
   }
 

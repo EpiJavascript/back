@@ -53,7 +53,7 @@ export default class UserChannelsController {
   })
   @HttpCode(HttpStatus.OK)
   @HttpCode(HttpStatus.UNAUTHORIZED)
-  update(@Payload() payload: JwtPayloadInterface, @Param('id') id: string, updateUserTextChannelDto: UpdateUserTextChannelDto): Promise<UpdateResult> {
+  update(@Payload() payload: JwtPayloadInterface, @Param('id') id: string, @Body() updateUserTextChannelDto: UpdateUserTextChannelDto): Promise<UpdateResult> {
     return this.userChannelsService.update(payload.userId, id, updateUserTextChannelDto);
   }
 

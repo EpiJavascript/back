@@ -49,7 +49,7 @@ export default class ServersController {
   })
   @HttpCode(HttpStatus.OK)
   @HttpCode(HttpStatus.FORBIDDEN)
-  update(@Payload() payload: JwtPayloadInterface, @Param('id') id: string, updateServerDto: UpdateServerDto): Promise<UpdateResult> {
+  update(@Payload() payload: JwtPayloadInterface, @Param('id') id: string, @Body() updateServerDto: UpdateServerDto): Promise<UpdateResult> {
     return this.serversService.update(payload.userId, id, updateServerDto);
   }
 
