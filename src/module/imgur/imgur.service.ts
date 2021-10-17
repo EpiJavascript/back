@@ -49,6 +49,9 @@ export default class ImgurService {
   }
 
   uploadImage(file: Express.Multer.File): Promise<string> {
+    if (file === undefined) {
+      return undefined;
+    }
     const data = new FormData();
     data.append('image', file.buffer.toString('base64'));
     data.append('type', 'base64');

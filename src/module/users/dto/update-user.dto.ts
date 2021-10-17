@@ -5,6 +5,7 @@ export default class UpdateUserDto {
   @IsOptional()
   @IsString()
   @ApiProperty({
+    required: false,
     description: 'User username',
     example: 'MageNume',
   })
@@ -13,6 +14,7 @@ export default class UpdateUserDto {
   @IsOptional()
   @IsString()
   @ApiProperty({
+    required: false,
     description: 'User password',
     example: 'p@ssword',
   })
@@ -20,6 +22,7 @@ export default class UpdateUserDto {
 
   @IsOptional()
   @ApiProperty({
+    required: false,
     description: 'Image file',
     type: 'file',
   })

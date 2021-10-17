@@ -5,6 +5,7 @@ export default class UpdateServerDto {
   @IsOptional()
   @IsString()
   @ApiProperty({
+    required: false,
     description: 'Server name',
     example: 'JSFullstack Server',
   })
@@ -12,6 +13,7 @@ export default class UpdateServerDto {
 
   @IsOptional()
   @ApiProperty({
+    required: false,
     description: 'Image file',
     type: 'file',
   })
