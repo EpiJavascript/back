@@ -8,7 +8,7 @@ export default class UpdateUserDto {
     description: 'User username',
     example: 'MageNume',
   })
-  username: string;
+  username?: string;
 
   @IsOptional()
   @IsString()
@@ -16,5 +16,12 @@ export default class UpdateUserDto {
     description: 'User password',
     example: 'p@ssword',
   })
-  password: string;
+  password?: string;
+
+  @IsOptional()
+  @ApiProperty({
+    description: 'Image file',
+    type: 'file',
+  })
+  image?: Express.Multer.File;
 }

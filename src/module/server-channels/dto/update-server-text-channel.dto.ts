@@ -8,5 +8,5 @@ export default class UpdateServerTextChannelDto {
     description: 'Channel name',
     example: 'General',
   })
-  name: string;
+  name?: string;
 }

@@ -3,6 +3,7 @@ import { DeleteResult, Repository, UpdateResult } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { CreateServerDto, UpdateServerDto } from './dto';
+import ImgurService from '../imgur/imgur.service';
 import UsersService from '../users/users.service';
 import { User } from '../users/entities';
 import { Server } from './entities';
@@ -13,6 +14,7 @@ export default class ServersService {
     @InjectRepository(Server)
     private serversRepository: Repository<Server>,
     private usersService: UsersService,
+    private imgurService: ImgurService,
   ) { }
 
   async findAll(userId: string): Promise<Server[]> {
@@ -72,7 +74,13 @@ export default class ServersService {
     if (server === undefined) {
       throw new UnauthorizedException();
     }
-    return this.serversRepository.update(id, updateServerDto);
+    const imageUrl = await this.imgurService.uploadImage(updateServerDto.image);
+    delete updateServerDto.image;
+    return this.serversRepository.update(id, {
+      ...updateServerDto,
+      imageUrl,
+      lastUpdatedBy: userId,
+    });
   }
 
   async join(userId: string, id: string): Promise<Server> {

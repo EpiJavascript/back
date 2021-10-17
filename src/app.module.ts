@@ -13,6 +13,7 @@ import FriendRequestsModule from './module/friend-request/friend-requests.module
 import UserChannelsModule from './module/user-channels/user-channels.module';
 import ServersModule from './module/servers/servers.module';
 import UsersModule from './module/users/users.module';
+import ImgurModule from './module/imgur/imgur.module';
 import EventsModule from './websocket/events.module';
 import AuthModule from './module/auth/auth.module';
 
@@ -66,6 +67,7 @@ const routes: Routes = [
     }),
     // Modules
     AuthModule,
+    ImgurModule,
     UsersModule,
     EventsModule,
     ServersModule,

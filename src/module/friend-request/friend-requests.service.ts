@@ -103,7 +103,7 @@ export default class FriendRequestsService {
     // update users
     actualUser.friends.push(otherUser);
     otherUser.friends.push(actualUser);
-    await this.usersService.update(otherUser.id, otherUser.id, otherUser);
+    await this.usersService.update(otherUser.id, otherUser.id, { ...otherUser });
     await this.usersService.update(actualUser.id, actualUser.id, actualUser);
 
     // send notification

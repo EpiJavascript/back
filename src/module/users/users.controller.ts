@@ -1,5 +1,6 @@
-import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Put, UseGuards } from '@nestjs/common';
-import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Put, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
+import { ApiBearerAuth, ApiConsumes, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { DeleteResult, UpdateResult } from 'typeorm';
 
 import JwtPayloadInterface from '../../common/interfaces/jwt-payload';
@@ -50,12 +51,12 @@ export default class UsersController {
     operationId: 'update',
     summary: 'Update a user',
   })
-  // @ApiConsumes('multipart/form-data')
-  // @UseInterceptors(FileInterceptor('image'))
+  @ApiConsumes('multipart/form-data')
+  @UseInterceptors(FileInterceptor('image'))
   @HttpCode(HttpStatus.OK)
   @HttpCode(HttpStatus.FORBIDDEN)
-  update(@Payload() payload: JwtPayloadInterface, @Param('id') id: string, @Body() updateUserDto: UpdateUserDto): Promise<UpdateResult> {
-    // console.log(image);
+  update(@Payload() payload: JwtPayloadInterface, @Param('id') id: string, @Body() updateUserDto: UpdateUserDto, @UploadedFile() image: Express.Multer.File): Promise<UpdateResult> {
+    updateUserDto.image = image;
     return this.usersService.update(payload.userId, id, updateUserDto);
   }
 

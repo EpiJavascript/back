@@ -8,5 +8,12 @@ export default class UpdateServerDto {
     description: 'Server name',
     example: 'JSFullstack Server',
   })
-  name: string;
+  name?: string;
+
+  @IsOptional()
+  @ApiProperty({
+    description: 'Image file',
+    type: 'file',
+  })
+  image?: Express.Multer.File;
 }
