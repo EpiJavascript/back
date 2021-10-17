@@ -1,5 +1,6 @@
 import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { ApiBearerAuth, ApiConsumes, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { DeleteResult, UpdateResult } from 'typeorm';
 
 import JwtPayloadInterface from '../../common/interfaces/jwt-payload';
@@ -8,7 +9,6 @@ import { CreateServerDto, UpdateServerDto } from './dto';
 import AuthGuard from '../../common/guards/auth.guard';
 import ServersService from './servers.service';
 import { Server } from './entities';
-import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller()
 @ApiTags('servers')
