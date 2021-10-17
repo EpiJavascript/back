@@ -50,7 +50,10 @@ export default class ServerChannelsService {
     if (!server.userIds.includes(userId)) {
       throw new UnauthorizedException();
     }
-    return this.serverTextChannelsRepository.update(id, updateServerTextChannelDto);
+    return this.serverTextChannelsRepository.update(id, {
+      ...updateServerTextChannelDto,
+      lastUpdatedBy: userId,
+    });
   }
 
 
