@@ -49,15 +49,18 @@ const routes: Routes = [
   },
 ];
 
+const nodeEnv = process.env.NODE_ENV ? process.env.NODE_ENV : 'development';
+const envFilePath = fs.existsSync(`.env.${nodeEnv}.local`)
+  ? `.env.${nodeEnv}.local`
+  : `.env.${nodeEnv}`;
+
 @Module({
   imports: [
     // router config
     RouterModule.register(routes),
     // dotenv Config
     ConfigModule.forRoot({
-      envFilePath: fs.existsSync(`.env.${process.env.NODE_ENV}.local`)
-        ? `.env.${process.env.NODE_ENV}.local`
-        : `.env.${process.env.NODE_ENV}`,
+      envFilePath,
       isGlobal: true,
       validationSchema,
     }),

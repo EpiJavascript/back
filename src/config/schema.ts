@@ -2,7 +2,7 @@ import * as Joi from 'joi';
 
 export default Joi.object({
   // Server config
-  NODE_ENV: Joi.string().valid('development', 'production', 'test'),
+  NODE_ENV: Joi.string().valid('development', 'production'),
 
   // TypeOrm config
   NEST_APP_PORT: Joi.number().default(3001),
