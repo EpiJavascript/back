@@ -1,18 +1,24 @@
 # How to generate and run migrations
 
-## Generate
+## Environment variable
 
-`NODE_ENV=[development | test | production] yarn run migration:generate -n [MigrationName]`
+Migrations scripts load your dotenv file the same way as the app does.
+
+## Generate
+
+`NODE_ENV=[development | production] yarn run migration:generate -n [MigrationName]`
+
 This will create a migration file under the /database/migrations folder with database changes
 
 ## Run
 
-`NODE_ENV=[development | test | production] yarn run migration:run`
+`NODE_ENV=[development | production] yarn run migration:run`
+
 This will run all the pending migrations files and update the corresponding database schema
 
 ## Revert
 
-`NODE_ENV=[development | test | production] yarn run migration:revert`
+`NODE_ENV=[development | production] yarn run migration:revert`
 
 ## Troubleshooting
 
