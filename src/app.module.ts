@@ -17,7 +17,6 @@ import ImgurModule from './module/imgur/imgur.module';
 import EventsModule from './websocket/events.module';
 import AuthModule from './module/auth/auth.module';
 
-
 const routes: Routes = [
   {
     path: 'users',
