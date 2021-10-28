@@ -1,19 +1,14 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import * as jwt from 'jsonwebtoken';
-import * as crypto from 'crypto';
 
 import HttpCustomStatus from 'src/common/enums/http-custom-status.enum';
 import JwtPayloadInterface from '../../common/interfaces/jwt-payload';
+import hashPassword from '../../common/helpers/hash-password';
 import { CreateUserDto, LoginUserDto } from '../users/dto';
 import UserService from '../users/users.service';
 import { User } from '../users/entities';
 import { AuthDto } from './dto';
 
-
-
-function hash(str: string): string {
-  return crypto.scryptSync(str, process.env.SALT_SECRET_KEY, 64).toString('hex');
-}
 
 @Injectable()
 export default class AuthService {
@@ -24,7 +19,7 @@ export default class AuthService {
     if (user === undefined) {
       throw new HttpException('login_bad_email', HttpCustomStatus.LOGIN_BAD_EMAIL);
     }
-    if (user.password !== hash(loginUserDto.password)) {
+    if (user.password !== hashPassword(loginUserDto.password)) {
       throw new HttpException('login_bad_password', HttpCustomStatus.LOGIN_BAD_PASSWORD);
     }
     const token: string = jwt.sign(
@@ -35,7 +30,7 @@ export default class AuthService {
   }
 
   async register(createUserDto: CreateUserDto): Promise<User> {
-    createUserDto.password = hash(createUserDto.password);
+    createUserDto.password = hashPassword(createUserDto.password);
     return this.userService.create(null, createUserDto);
   }
 }

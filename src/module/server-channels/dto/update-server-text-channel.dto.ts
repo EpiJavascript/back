@@ -5,8 +5,9 @@ export default class UpdateServerTextChannelDto {
   @IsOptional()
   @IsString()
   @ApiProperty({
+    required: false,
     description: 'Channel name',
     example: 'General',
   })
-  name: string;
+  name?: string;
 }

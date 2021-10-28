@@ -5,6 +5,7 @@ enum HttpCustomStatus {
   NOT_FRIEND_WITH_USER = 443,
   CANNOT_SELF_FRIEND_REQUEST = 444,
   FRIEND_REQUEST_ALREADY_PENDING = 445,
+  FAILED_TO_UPLOAD = 446,
 }
 
 export default HttpCustomStatus;

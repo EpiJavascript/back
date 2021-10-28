@@ -5,8 +5,10 @@ import { Socket } from 'socket.io';
 
 import HttpCustomStatus from '../../common/enums/http-custom-status.enum';
 import { EventsGateway } from '../../websocket/events.gateway';
+import hashPassword from '../../common/helpers/hash-password';
 import WsEmitMessage from '../../common/enums/ws.enum';
 import { CreateUserDto, UpdateUserDto } from './dto';
+import ImgurService from '../imgur/imgur.service';
 import { User } from './entities';
 
 @Injectable()
@@ -15,6 +17,7 @@ export default class UsersService {
     @InjectRepository(User)
     private readonly usersRepository: Repository<User>,
     private eventsGateway: EventsGateway,
+    private imgurService: ImgurService,
   ) { }
 
   // Users
@@ -54,11 +57,18 @@ export default class UsersService {
     return this.usersRepository.delete(id);
   }
 
-  update(userId: string, id: string, updateUserDto: UpdateUserDto): Promise<UpdateResult> {
+  async update(userId: string, id: string, updateUserDto: UpdateUserDto): Promise<UpdateResult> {
     if (userId != id) {
       throw new UnauthorizedException();
     }
-    return this.usersRepository.update(id, updateUserDto);
+    const imageUrl = await this.imgurService.uploadImage(updateUserDto.image);
+    delete updateUserDto.image;
+    updateUserDto.password = updateUserDto.password ? hashPassword(updateUserDto.password) : undefined;
+    return this.usersRepository.update(id, {
+      ...updateUserDto,
+      imageUrl,
+      lastUpdatedBy: userId,
+    });
   }
 
 

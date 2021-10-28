@@ -1,5 +1,6 @@
 # custom
 .env.development.local
+.env.production.local
 
 # compiled output
 /dist

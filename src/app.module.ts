@@ -13,9 +13,9 @@ import FriendRequestsModule from './module/friend-request/friend-requests.module
 import UserChannelsModule from './module/user-channels/user-channels.module';
 import ServersModule from './module/servers/servers.module';
 import UsersModule from './module/users/users.module';
+import ImgurModule from './module/imgur/imgur.module';
 import EventsModule from './websocket/events.module';
 import AuthModule from './module/auth/auth.module';
-
 
 const routes: Routes = [
   {
@@ -48,15 +48,18 @@ const routes: Routes = [
   },
 ];
 
+const nodeEnv = process.env.NODE_ENV ? process.env.NODE_ENV : 'development';
+const envFilePath = fs.existsSync(`.env.${nodeEnv}.local`)
+  ? `.env.${nodeEnv}.local`
+  : `.env.${nodeEnv}`;
+
 @Module({
   imports: [
     // router config
     RouterModule.register(routes),
     // dotenv Config
     ConfigModule.forRoot({
-      envFilePath: fs.existsSync(`.env.${process.env.NODE_ENV}.local`)
-        ? `.env.${process.env.NODE_ENV}.local`
-        : `.env.${process.env.NODE_ENV}`,
+      envFilePath,
       isGlobal: true,
       validationSchema,
     }),
@@ -66,6 +69,7 @@ const routes: Routes = [
     }),
     // Modules
     AuthModule,
+    ImgurModule,
     UsersModule,
     EventsModule,
     ServersModule,

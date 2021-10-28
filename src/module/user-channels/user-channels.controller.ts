@@ -7,9 +7,9 @@ import JwtPayloadInterface from 'src/common/interfaces/jwt-payload';
 import { Payload } from 'src/common/decorators/payload.decorator';
 import ChannelsService from './user-channels.service';
 import AuthGuard from 'src/common/guards/auth.guard';
-import { UserTextChannel } from './entities';
 import { CreateMessageDto } from '../messages/dto';
 import { Message } from '../messages/entities';
+import { UserTextChannel } from './entities';
 
 @ApiTags('user-channels')
 @Controller()
@@ -53,7 +53,7 @@ export default class UserChannelsController {
   })
   @HttpCode(HttpStatus.OK)
   @HttpCode(HttpStatus.UNAUTHORIZED)
-  update(@Payload() payload: JwtPayloadInterface, @Param('id') id: string, updateUserTextChannelDto: UpdateUserTextChannelDto): Promise<UpdateResult> {
+  update(@Payload() payload: JwtPayloadInterface, @Param('id') id: string, @Body() updateUserTextChannelDto: UpdateUserTextChannelDto): Promise<UpdateResult> {
     return this.userChannelsService.update(payload.userId, id, updateUserTextChannelDto);
   }
 

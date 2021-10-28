@@ -24,6 +24,11 @@ export default class User extends Base {
   })
   password: string;
 
+  @Column({
+    nullable: true,
+  })
+  imageUrl?: string;
+
   /**
    * Servers relation
    */

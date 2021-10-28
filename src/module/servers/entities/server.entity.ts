@@ -14,6 +14,11 @@ export default class Server extends Base {
   @Column()
   name: string;
 
+  @Column({
+    nullable: true,
+  })
+  imageUrl?: string;
+
   /**
    * AdminUser relation
    */

@@ -1,6 +1,13 @@
 import * as dotenv from 'dotenv';
+import * as fs from 'fs';
+
+const nodeEnv = process.env.NODE_ENV ? process.env.NODE_ENV : 'development';
+const path = fs.existsSync(`.env.${nodeEnv}.local`)
+  ? `.env.${nodeEnv}.local`
+  : `.env.${nodeEnv}`;
+
 dotenv.config({
-  path: `.env.${process.env.NODE_ENV}.local`,
+  path,
 });
 
 export default {
