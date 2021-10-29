@@ -17,8 +17,9 @@
 
 ## About The Project
 
-Recration of a discord web application
-Api of the [front](https://github.com/EpiJavascript/front) project
+Recration of a discord web application.
+
+Api of the [front](https://github.com/EpiJavascript/front) project.
 
 ### Built With
 
@@ -53,7 +54,8 @@ $ yarn run start:prod
 ### Environment variable
 
 The app loads a dotenv file depending on your NODE_ENV environment variable (fallback to _development_) : `.env.$NODE_ENV`.
-If a local dotenv file is provided, the app will load it instead : `.env.$NODE_ENV.local`
+
+If a local dotenv file is provided, the app will load it instead : `.env.$NODE_ENV.local`.
 
 ## Deployment
 
