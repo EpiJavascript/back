@@ -1,4 +1,4 @@
-import { QueryFailedExceptionFilter } from './common/filter/query.filter';
+import { QueryFailedExceptionFilter } from './common/filters/query.filter';
 import { APP_FILTER, RouterModule, Routes } from '@nestjs/core';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
