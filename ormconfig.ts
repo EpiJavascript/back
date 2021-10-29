@@ -6,6 +6,9 @@ const path = fs.existsSync(`.env.${nodeEnv}.local`)
   ? `.env.${nodeEnv}.local`
   : `.env.${nodeEnv}`;
 
+console.log(nodeEnv);
+console.log(path);
+
 dotenv.config({
   path,
 });
