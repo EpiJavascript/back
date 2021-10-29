@@ -61,7 +61,7 @@ If a local dotenv file is provided, the app will load it instead : `.env.$NODE_E
 
 This project is link with multiple [Heroku](https://www.heroku.com) applications, pushing to some branches will trigger an auto-deployment :
 * dev -> https://dashboard.heroku.com/apps/epi-javascript-backend-dev
-* prod -> https://dashboard.heroku.com/apps/epi-javascript-backend-dev
+* maaster -> https://dashboard.heroku.com/apps/epi-javascript-backend-prod
 
 ## Documentation
 
