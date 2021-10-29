@@ -3,6 +3,7 @@ import { DeleteResult, Repository, UpdateResult } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Socket } from 'socket.io';
 
+import { generateDefaultImage } from 'src/common/helpers/generate-default-image';
 import HttpCustomStatus from '../../common/enums/http-custom-status.enum';
 import { EventsGateway } from '../../websocket/events.gateway';
 import hashPassword from '../../common/helpers/hash-password';
@@ -75,6 +76,7 @@ export default class UsersService {
   async create(userId: string | null, createUserDto: CreateUserDto): Promise<User> {
     const user: User = this.usersRepository.create({
       ...createUserDto,
+      imageUrl: generateDefaultImage(),
       createdBy: userId,
       lastUpdatedBy: userId,
     });
