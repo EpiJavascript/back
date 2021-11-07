@@ -1,5 +1,6 @@
-import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, UseGuards } from '@nestjs/common';
-import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
+import { ApiBearerAuth, ApiConsumes, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { DeleteResult, UpdateResult } from 'typeorm';
 
 import JwtPayloadInterface from '../../common/interfaces/jwt-payload';
@@ -60,9 +61,12 @@ export default class ServersController {
     operationId: 'update',
     summary: 'Update a server (must be server\'s admin)',
   })
+  @ApiConsumes('multipart/form-data')
+  @UseInterceptors(FileInterceptor('image'))
   @HttpCode(HttpStatus.OK)
   @HttpCode(HttpStatus.FORBIDDEN)
-  update(@Payload() payload: JwtPayloadInterface, @Param('id') id: string, @Body() updateServerDto: UpdateServerDto): Promise<UpdateResult> {
+  update(@Payload() payload: JwtPayloadInterface, @Param('id') id: string, @Body() updateServerDto: UpdateServerDto, @UploadedFile() image: Express.Multer.File): Promise<UpdateResult> {
+    updateServerDto.image = image;
     return this.serversService.update(payload.userId, id, updateServerDto);
   }
 

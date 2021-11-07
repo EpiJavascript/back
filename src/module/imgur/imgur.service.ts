@@ -48,12 +48,12 @@ export default class ImgurService {
     };
   }
 
-  uploadImage(file: string): Promise<string> {
+  uploadImage(file: Express.Multer.File): Promise<string> {
     if (file === undefined) {
       return undefined;
     }
     const data = new FormData();
-    data.append('image', file);
+    data.append('image', file.buffer.toString('base64'));
     data.append('type', 'base64');
     console.log();
     return axios({
