@@ -62,7 +62,9 @@ export default class UsersService {
     if (userId != id) {
       throw new UnauthorizedException();
     }
-    const user: User = await this.usersRepository.findOneOrFail(id);
+    const user: User = await this.usersRepository.findOneOrFail(id, {
+      select: ['password', 'imageUrl'],
+    });
     const imageUrl = await this.imgurService.uploadImage(updateUserDto.image);
     delete updateUserDto.image;
     const password = updateUserDto.password ? hashPassword(updateUserDto.password) : undefined;
