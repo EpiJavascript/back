@@ -79,7 +79,6 @@ export default class ServersService {
       throw new UnauthorizedException();
     }
     const imageUrl = await this.imgurService.uploadImage(updateServerDto.image);
-    delete updateServerDto.image;
     return this.serversRepository.update(id, {
       ...updateServerDto,
       imageUrl,
