@@ -95,12 +95,15 @@ export default class ServerChannelsService {
   // Messages
   async findMessages(userId: string, serverId: string, channelId: string): Promise<Message[]> {
     const server: Server = await this.serversService.findOneOrFail(serverId);
-    const messageFlux: MessageFlux = await this.messagFluxRepository
-      .createQueryBuilder('messageFlux')
+    const serverTextChannel: ServerTextChannel = await this.serverTextChannelsRepository
+      .createQueryBuilder('serverTextChannel')
+      .leftJoinAndSelect('serverTextChannel.messageFlux', 'messageFlux')
       .leftJoinAndSelect('messageFlux.messages', 'messages')
       .leftJoinAndMapOne('messages.user', User, 'user', 'messages.createdBy = user.id')
+      .where('serverTextChannel.id = :id', { id: channelId })
       .getOne();
-    const messages: Message[] = messageFlux.messages;
+
+    const messages: Message[] = serverTextChannel.messageFlux.messages;
 
     if (!server.userIds.includes(userId)) {
       throw new UnauthorizedException();
@@ -113,6 +116,7 @@ export default class ServerChannelsService {
 
   async postMessage(userId: string, serverId: string, channelId: string, createMessageDto: CreateMessageDto): Promise<Message> {
     const server: Server = await this.serversService.findOneOrFail(serverId);
+    const user: User = await this.usersService.findOneOrFail(userId);
     const serverTextChannel: ServerTextChannel = await this.serverTextChannelsRepository.findOneOrFail(channelId, { relations: ['messageFlux', 'messageFlux.messages'] });
     if (!server.userIds.includes(userId)) {
       throw new UnauthorizedException();
@@ -135,7 +139,7 @@ export default class ServerChannelsService {
       if (socket === undefined || value.id === userId) {
         return;
       }
-      this.eventsGateway.send(socket, WsEmitMessage.SERVER_CHANNEL_MESSAGE, { id: serverTextChannel.id, message: message.message, serverId, createdBy: message.createdBy });
+      this.eventsGateway.send(socket, WsEmitMessage.SERVER_CHANNEL_MESSAGE, { id: serverTextChannel.id, message: message.message, serverId, createdBy: user });
     });
 
     return this.messageRepository.save(message);
