@@ -10,6 +10,7 @@ export default class Base {
 
   @Column({
     nullable: true, // needed for self-created users
+    type: 'uuid',
   })
   createdBy: string;
 
@@ -18,6 +19,7 @@ export default class Base {
 
   @Column({
     nullable: true, // needed for self-created users
+    type: 'uuid',
   })
   lastUpdatedBy: string;
 }

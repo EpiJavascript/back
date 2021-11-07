@@ -91,17 +91,24 @@ export default class ServerChannelsService {
     return this.serverTextChannelsRepository.save(serverTextChannel);
   }
 
+
   // Messages
   async findMessages(userId: string, serverId: string, channelId: string): Promise<Message[]> {
     const server: Server = await this.serversService.findOneOrFail(serverId);
-    const serverTextChannel: ServerTextChannel = await this.serverTextChannelsRepository.findOneOrFail(channelId, { relations: ['messageFlux', 'messageFlux.messages'] });
+    const messageFlux: MessageFlux = await this.messagFluxRepository
+      .createQueryBuilder('messageFlux')
+      .leftJoinAndSelect('messageFlux.messages', 'messages')
+      .leftJoinAndMapOne('messages.user', User, 'user', 'messages.createdBy = user.id')
+      .getOne();
+    const messages: Message[] = messageFlux.messages;
+
     if (!server.userIds.includes(userId)) {
       throw new UnauthorizedException();
     }
     if (!server.channelIds.includes(channelId)) {
       throw new UnauthorizedException();
     }
-    return serverTextChannel.messageFlux.messages;
+    return messages;
   }
 
   async postMessage(userId: string, serverId: string, channelId: string, createMessageDto: CreateMessageDto): Promise<Message> {
@@ -128,7 +135,7 @@ export default class ServerChannelsService {
       if (socket === undefined || value.id === userId) {
         return;
       }
-      this.eventsGateway.send(socket, WsEmitMessage.SERVER_CHANNEL_MESSAGE, { id: serverTextChannel.id, message, serverId });
+      this.eventsGateway.send(socket, WsEmitMessage.SERVER_CHANNEL_MESSAGE, { id: serverTextChannel.id, message: message.message, serverId, createdBy: message.createdBy });
     });
 
     return this.messageRepository.save(message);
