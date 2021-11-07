@@ -15,7 +15,7 @@ export default class UpdateServerDto {
   @ApiProperty({
     required: false,
     description: 'Image file',
-    type: 'base64',
+    example: 'Base64 string...',
   })
   image?: string;
 }

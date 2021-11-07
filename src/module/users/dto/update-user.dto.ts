@@ -24,7 +24,7 @@ export default class UpdateUserDto {
   @ApiProperty({
     required: false,
     description: 'Image file in base64 encoding',
-    type: 'base64',
+    example: 'Base64 string...',
   })
   image?: string;
 }
