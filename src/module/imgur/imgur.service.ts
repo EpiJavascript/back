@@ -53,10 +53,8 @@ export default class ImgurService {
       return undefined;
     }
     const data = new FormData();
-    console.log(file);
     data.append('image', file.buffer.toString('base64'));
     data.append('type', 'base64');
-    console.log();
     return axios({
       method: 'POST',
       url: `${this.baseUrl}/upload`,
