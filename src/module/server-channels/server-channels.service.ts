@@ -128,7 +128,7 @@ export default class ServerChannelsService {
       if (socket === undefined || value.id === userId) {
         return;
       }
-      this.eventsGateway.send(socket, WsEmitMessage.SERVER_CHANNEL_MESSAGE, { id: serverTextChannel.id, message });
+      this.eventsGateway.send(socket, WsEmitMessage.SERVER_CHANNEL_MESSAGE, { id: serverTextChannel.id, message, serverId });
     });
 
     return this.messageRepository.save(message);
