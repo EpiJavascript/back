@@ -19,13 +19,26 @@ export default class ServersController {
   @UseGuards(AuthGuard)
   @ApiBearerAuth()
   @ApiOperation({
-    operationId: 'findAll',
+    operationId: 'find',
     summary: 'Find all your server',
   })
   @HttpCode(HttpStatus.OK)
   @HttpCode(HttpStatus.FORBIDDEN)
-  findAll(@Payload() payload: JwtPayloadInterface): Promise<Server[]> {
-    return this.serversService.findAll(payload.userId);
+  find(@Payload() payload: JwtPayloadInterface): Promise<Server[]> {
+    return this.serversService.find(payload.userId);
+  }
+
+  @Get('/all')
+  @UseGuards(AuthGuard)
+  @ApiBearerAuth()
+  @ApiOperation({
+    operationId: 'findAll',
+    summary: 'Find all the servers',
+  })
+  @HttpCode(HttpStatus.OK)
+  @HttpCode(HttpStatus.FORBIDDEN)
+  findAll(): Promise<Server[]> {
+    return this.serversService.findAll();
   }
 
   @Post()

@@ -17,12 +17,16 @@ export default class ServersService {
     private imgurService: ImgurService,
   ) { }
 
-  async findAll(userId: string): Promise<Server[]> {
+  async find(userId: string): Promise<Server[]> {
     return this.serversRepository
       .createQueryBuilder('server')
       .leftJoin('server.users', 'user')
       .where('user.id = :id', { id: userId })
       .getMany();
+  }
+
+  async findAll(): Promise<Server[]> {
+    return this.serversRepository.find();
   }
 
   findOne(id: string): Promise<Server> {
