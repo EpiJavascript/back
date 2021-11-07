@@ -33,7 +33,12 @@ export default class ServerChannelsService {
     if (!server.userIds.includes(userId)) {
       throw new UnauthorizedException();
     }
-    return this.serverTextChannelsRepository.find({ relations: ['messageFlux'] });
+    return this.serverTextChannelsRepository.find({
+      where: {
+        serverId,
+      },
+      relations: ['messageFlux'],
+    });
   }
 
   findOne(id: string): Promise<ServerTextChannel> {
