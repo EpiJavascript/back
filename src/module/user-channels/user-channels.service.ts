@@ -113,10 +113,10 @@ export default class UserChannelsService {
     userTextChannel.users.forEach((value: User) => {
       const socket: Socket = connected.get(value.id);
       // skip if user is not connected or if user is the function caller
-      if (socket === undefined || value.id === userId) {
+      if (socket === undefined || value.id === userId) {
         return;
       }
-      this.eventsGateway.send(socket, WsEmitMessage.USER_CHANNEL_MESSAGE, { id: userTextChannel.id, message });
+      this.eventsGateway.send(socket, WsEmitMessage.USER_CHANNEL_MESSAGE, { id: userTextChannel.id, message: message.message, createdBy: message.createdBy });
     });
 
     // save message
