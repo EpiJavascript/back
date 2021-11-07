@@ -82,7 +82,7 @@ export default class ServersService {
     delete updateServerDto.image;
     return this.serversRepository.update(id, {
       ...updateServerDto,
-      imageUrl,
+      imageUrl: imageUrl ? imageUrl : server.imageUrl,
       lastUpdatedBy: userId,
     });
   }
