@@ -23,8 +23,8 @@ export default class UpdateUserDto {
   @IsOptional()
   @ApiProperty({
     required: false,
-    description: 'Image file',
-    type: 'file',
+    description: 'Image file in base64 encoding',
+    type: 'base64',
   })
-  image?: Express.Multer.File;
+  image?: string;
 }

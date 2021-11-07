@@ -15,7 +15,7 @@ export default class UpdateServerDto {
   @ApiProperty({
     required: false,
     description: 'Image file',
-    type: 'file',
+    type: 'base64',
   })
-  image?: Express.Multer.File;
+  image?: string;
 }
